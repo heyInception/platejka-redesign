@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const sass = require('sass');
 
 const root = path.resolve(__dirname, '..');
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'utf8');
@@ -22,6 +23,28 @@ test('header uses semantic and accessible navigation markup', () => {
   assert.match(html, /nav__submenu--nested/);
 });
 
+test('header logo stays hidden until the preloader completion event starts its intro', () => {
+  const js = read('src/js/components/header.js');
+  const scss = read('src/scss/components/_header.scss');
+
+  assert.match(scss, /&__logo-link\s*\{[\s\S]*?opacity:\s*0;[\s\S]*?visibility:\s*hidden;/);
+  assert.match(js, /platejka:preloader-complete/);
+  assert.match(js, /\.set\(logo,\s*\{\s*autoAlpha:\s*1\s*\}\)/);
+});
+
+test('all navigation controls use the UI kit hover treatment', () => {
+  const css = sass.compile(
+    path.join(root, 'src/scss/components/_header.scss'),
+    { style: 'expanded' },
+  ).css;
+
+  assert.match(css, /\.nav__link:hover[^{]*\{[^}]*opacity:\s*0\.72/s);
+  assert.match(css, /\.nav__toggle:hover[^{]*\{[^}]*opacity:\s*0\.72/s);
+  assert.match(css, /\.nav__sublink\s*\{[^}]*opacity:\s*1/s);
+  assert.match(css, /\.nav__sublink:hover[^{]*\{[^}]*opacity:\s*0\.72/s);
+  assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*?\.nav__link[\s\S]*?transition:\s*none/s);
+});
+
 test('header component uses GSAP timelines and supports reduced motion', () => {
   const js = read('src/js/components/header.js');
   const head = read('src/partials/head.html');
@@ -32,6 +55,7 @@ test('header component uses GSAP timelines and supports reduced motion', () => {
   assert.match(js, /header__logo-word > path/);
   assert.match(js, /duration:\s*0\.22/);
   assert.match(js, /stagger:\s*0\.06/);
+  assert.match(js, /clearProps:\s*['"]opacity['"]/);
   assert.match(js, /prefers-reduced-motion: reduce/);
   assert.match(js, /aria-expanded/);
   assert.match(js, /querySelectorAll\('\.nav__toggle'\)/);

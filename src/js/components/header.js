@@ -88,6 +88,7 @@ if (header) {
         y: 0,
         duration: prefersReducedMotion ? 0 : 0.2,
         stagger: prefersReducedMotion ? 0 : 0.035,
+        onComplete: () => gsap.set(entries, { clearProps: 'opacity' }),
       }, '<0.06');
 
     const controller = { item, toggle, submenu, label, title, timeline };
@@ -138,11 +139,18 @@ if (header) {
       reduceMotion: reduceMotionQuery,
     },
     (context) => {
-      if (context.conditions.reduceMotion) return undefined;
+      if (context.conditions.reduceMotion) {
+        const showLogo = () => gsap.set(logo, { autoAlpha: 1 });
+        document.addEventListener('platejka:preloader-complete', showLogo, { once: true });
 
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro
-        .from(logoMarkParts, {
+        return () => document.removeEventListener('platejka:preloader-complete', showLogo);
+      }
+
+      const playLogoIntro = () => {
+        const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        intro
+          .set(logo, { autoAlpha: 1 })
+          .from(logoMarkParts, {
           autoAlpha: 0,
           scale: 0.8,
           transformOrigin: '50% 50%',
@@ -155,6 +163,17 @@ if (header) {
           duration: 0.22,
           stagger: 0.06,
         }, 0.18);
+
+        return intro;
+      };
+
+      let intro;
+      const startLogoIntro = () => {
+        intro?.kill();
+        intro = playLogoIntro();
+      };
+
+      document.addEventListener('platejka:preloader-complete', startLogoIntro, { once: true });
 
       const hover = gsap.timeline({
         paused: true,
@@ -171,8 +190,9 @@ if (header) {
       logo.addEventListener('pointerenter', playLogoHover);
 
       return () => {
+        document.removeEventListener('platejka:preloader-complete', startLogoIntro);
         logo.removeEventListener('pointerenter', playLogoHover);
-        intro.kill();
+        intro?.kill();
         hover.kill();
       };
     },
