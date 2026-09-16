@@ -1,0 +1,50 @@
+/* stylelint-disable value-keyword-case */
+@use "sass:map";
+
+@mixin flex-layout($options) {
+  .#{map-get($options, parentClass)} {
+    --gap-row: #{map.get($options, desktopGapRow)};
+    --gap-column: #{map.get($options, desktopGapColumn)};
+    --elems: #{map.get($options, desktopElems)};
+
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--gap-row);
+    column-gap: var(--gap-column);
+    @media (max-width: map-get($options, tablet)) {
+      --gap-row: #{map.get($options, tabletGapRow)};
+      --gap-column: #{map.get($options, tabletGapColumn)};
+      --elems: #{map.get($options, tabletElems)};
+    }
+
+    @media (max-width: map-get($options, mobile)) {
+      --gap-row: #{map.get($options, mobileGapRow)};
+      --gap-column: #{map.get($options, mobileGapColumn)};
+      --elems: #{map.get($options, mobileElems)};
+    }
+  }
+
+  .#{map.get($options, itemsClass)} {
+    width: calc((100% - ((var(--elems) - 1) * var(--gap-column))) / (var(--elems)));
+
+
+  }
+}
+
+// $options: (
+//   parentClass: "cards",
+//   itemsClass: "cards__item",
+//   desktopGapRow: 30px,
+//   desktopGapColumn: 30px,
+//   desktopElems: 3,
+//   tablet: "1024px",
+//   tabletElems: 2,
+//   tabletGapRow:  30px,
+//   tabletGapColumn:  30px,
+//   mobile: "600px",
+//   mobileElems: 1,
+//   mobileGapRow: 20px,
+//   mobileGapColumn: 20px
+// );
+
+// @include flex-layout($options);
