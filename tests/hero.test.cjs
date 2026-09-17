@@ -20,6 +20,9 @@ test('hero exposes semantic calculator and reusable content contract', () => {
   assert.match(html, /<label[^>]+for="hero-amount"/);
   assert.match(html, /<input[^>]+id="hero-amount"[^>]+value="100000"/);
   assert.match(html, /<output[^>]+data-role="grand-total"/);
+  assert.match(html, /hero-calculator__flag hero-calculator__flag_cny/);
+  assert.match(html, /hero-calculator__flag hero-calculator__flag_usd/);
+  assert.doesNotMatch(html, /🇨🇳|🇺🇸/);
   assert.match(html, /<dialog[^>]+data-contact-dialog/);
 });
 
@@ -42,7 +45,10 @@ test('hero styles compile desktop, mobile, dialog and reduced-motion states', ()
   assert.match(css, /\.hero__layout\s*\{[^}]*display:\s*grid/s);
   assert.match(css, /grid-template-columns:\s*minmax\(0,\s*864px\)\s*416px/);
   assert.match(css, /\.hero__title-secondary\s*\{[^}]*var\(--text-overlay-secondary\)/s);
+  assert.match(css, /\.hero__title-secondary\s*\{[^}]*max-width:\s*460px/s);
   assert.match(css, /\.hero-calculator/);
+  assert.match(css, /\.hero-calculator__flag_cny/);
+  assert.match(css, /\.hero-calculator__flag_usd/);
   assert.match(css, /\.contact-dialog::backdrop/);
   assert.match(css, /@media \(max-width:\s*576px\)/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);

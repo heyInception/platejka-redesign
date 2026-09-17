@@ -54,6 +54,17 @@ npm run dev
 - Если cookie недоступны, прелоадер продолжает работать без ошибки.
 - При `prefers-reduced-motion: reduce` длительная анимация пропускается.
 
+### Hero и калькулятор платежа
+
+- Адаптивный Hero собран для desktop и mobile; контентная панель, изображение и blur анимируются через GSAP после события `platejka:ready`.
+- Калькулятор поддерживает CNY и USD. При сумме меньше `3000` комиссия равна `275` единицам выбранной валюты, начиная с `3000` — `0,5%` от суммы.
+- Курс конвертации и комиссия учитывают коэффициент `1.01`; кнопка расчёта открывает нативный `<dialog>` с итогами.
+- Заголовок разделён на поля `.hero__title-primary` и `.hero__title-secondary`, поэтому цветную часть можно независимо заполнять из ACF.
+- Фоновые изображения остаются в inline CSS-переменных `--hero-image` и `--hero-blur`, что позволяет выводить URL из WordPress без генерации отдельных CSS-классов.
+- Курсы передаются в JSON-атрибуте `data-currency-rates`, например `{"CNY":12.3,"USD":81.0929}`. Перед выводом в WordPress значение нужно пропускать через `wp_json_encode()` и `esc_attr()`.
+
+Рекомендуемые ACF-поля: `hero_title_primary`, `hero_title_secondary`, `hero_description`, `hero_background`, `hero_blur`, `hero_currency_rates`, карточки преимуществ и подписи калькулятора. Структуру HTML и `data-*`-атрибуты при интеграции следует сохранить — JavaScript не зависит от конкретных текстов.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -77,6 +88,8 @@ npm run dev
 │   ├── js/
 │   │   ├── components/
 │   │   │   ├── header.js            # Навигация и анимация логотипа
+│   │   │   ├── hero.js              # Калькулятор, диалог и GSAP-анимация Hero
+│   │   │   ├── hero-calculator.cjs   # Чистая модель расчёта
 │   │   │   ├── preloader.js         # GSAP-таймлайн прелоадера
 │   │   │   └── preloader-state.cjs  # Cookie-состояние прелоадера
 │   │   ├── _components.js           # Подключение компонентов
@@ -86,11 +99,13 @@ npm run dev
 │   │   ├── head.html
 │   │   ├── header.html
 │   │   ├── footer.html
+│   │   ├── hero.html
 │   │   └── preloader.html
 │   ├── resources/                   # Шрифты и прочие ресурсы
 │   ├── scss/
 │   │   ├── components/
 │   │   │   ├── _header.scss
+│   │   │   ├── _hero.scss
 │   │   │   └── _preloader.scss
 │   │   ├── mixins/
 │   │   │   ├── _breakpoint.scss     # Адаптивные breakpoint-миксины
@@ -104,6 +119,8 @@ npm run dev
 │   ├── header-menu.test.cjs
 │   ├── header.test.cjs
 │   ├── preloader.test.cjs
+│   ├── hero-calculator.test.cjs
+│   ├── hero.test.cjs
 │   └── ui-components.test.cjs
 ├── gulpfile.js
 ├── package.json
