@@ -47,3 +47,17 @@ test('hero styles compile desktop, mobile, dialog and reduced-motion states', ()
   assert.match(css, /@media \(max-width:\s*576px\)/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });
+
+test('hero waits for page readiness and honors reduced motion', () => {
+  const hero = read('src/js/components/hero.js');
+  const preloader = read('src/js/components/preloader.js');
+
+  assert.match(hero, /from ['"]gsap['"]/);
+  assert.match(hero, /gsap\.matchMedia\(\)/);
+  assert.match(hero, /platejka:ready/);
+  assert.match(hero, /prefers-reduced-motion: reduce/);
+  assert.match(hero, /clipPath/);
+  assert.match(hero, /pointermove/);
+  assert.match(hero, /gsap\.quickTo/);
+  assert.match(preloader, /platejka:ready/);
+});

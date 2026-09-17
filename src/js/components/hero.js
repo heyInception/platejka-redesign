@@ -1,3 +1,5 @@
+import { gsap } from 'gsap';
+
 const {
   calculateTransfer,
   formatMoney,
@@ -135,12 +137,122 @@ function initHeroCalculator(root, dialog) {
   calculate();
 }
 
+function initHeroMotion(root) {
+  if (!root || root.dataset.motionReady === 'true') return;
+  root.dataset.motionReady = 'true';
+
+  const panel = root.querySelector('[data-hero-panel]');
+  const image = root.querySelector('[data-hero-image]');
+  const blur = root.querySelector('[data-hero-blur]');
+  const copyTargets = root.querySelectorAll('[data-hero-copy]');
+  const calculator = root.querySelector('[data-hero-calculator]');
+  const cards = root.querySelectorAll('[data-hero-cards] > *');
+  const media = gsap.matchMedia();
+  let hasPlayed = false;
+
+  const play = () => {
+    if (hasPlayed) return;
+    hasPlayed = true;
+
+    media.add(
+      {
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+        desktop: '(min-width: 1025px) and (pointer: fine)',
+      },
+      (context) => {
+        const { reduceMotion, desktop } = context.conditions;
+        const targets = [panel, image, blur, ...copyTargets, calculator, ...cards].filter(Boolean);
+
+        if (reduceMotion) {
+          gsap.set(targets, { clearProps: 'all' });
+          return undefined;
+        }
+
+        const intro = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+        });
+
+        intro
+          .from(panel, {
+            clipPath: 'inset(0 100% 0 0 round 32px)',
+            duration: desktop ? 0.9 : 0.65,
+          })
+          .from(image, {
+            autoAlpha: 0,
+            scale: 1.12,
+            xPercent: 8,
+            duration: 1.1,
+          }, 0.08)
+          .from(blur, {
+            autoAlpha: 0,
+            scale: 1.16,
+            yPercent: 16,
+            duration: 1,
+          }, 0.12)
+          .from(copyTargets, {
+            autoAlpha: 0,
+            y: 24,
+            stagger: desktop ? 0.08 : 0.055,
+            duration: 0.55,
+          }, 0.28)
+          .from([calculator, ...cards], {
+            autoAlpha: 0,
+            y: 32,
+            stagger: 0.1,
+            duration: 0.65,
+          }, 0.42);
+
+        const ambient = gsap.to(blur, {
+          scale: 1.045,
+          yPercent: -2,
+          duration: 5.5,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          paused: true,
+        });
+        intro.eventCallback('onComplete', () => ambient.play());
+
+        let handlePointerMove;
+        if (desktop && image) {
+          const moveX = gsap.quickTo(image, 'x', { duration: 0.7, ease: 'power3.out' });
+          const moveY = gsap.quickTo(image, 'y', { duration: 0.7, ease: 'power3.out' });
+
+          handlePointerMove = (event) => {
+            const bounds = panel.getBoundingClientRect();
+            const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+            const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+            moveX(x * 18);
+            moveY(y * 12);
+          };
+          panel.addEventListener('pointermove', handlePointerMove);
+        }
+
+        return () => {
+          if (handlePointerMove) panel.removeEventListener('pointermove', handlePointerMove);
+          intro.kill();
+          ambient.kill();
+          gsap.killTweensOf([image, blur]);
+        };
+      },
+      root,
+    );
+  };
+
+  if (document.documentElement.dataset.pageReady === 'true' || !document.querySelector('[data-preloader]')) {
+    play();
+  } else {
+    document.addEventListener('platejka:ready', play, { once: true });
+  }
+}
+
 const hero = document.querySelector('[data-hero]');
 const dialog = document.querySelector('[data-contact-dialog]');
 
 if (hero) {
   initContactDialog(dialog);
   initHeroCalculator(hero.querySelector('[data-hero-calculator]'), dialog);
+  initHeroMotion(hero);
 
   document.querySelectorAll('[data-graph-path="call"]').forEach((button) => {
     button.addEventListener('click', () => openContactDialog(dialog, '', button));
@@ -151,6 +263,7 @@ export {
   buildSummary,
   initContactDialog,
   initHeroCalculator,
+  initHeroMotion,
   openContactDialog,
   parseRates,
 };

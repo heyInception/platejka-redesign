@@ -21,7 +21,8 @@ if (preloader) {
     body.classList.remove('page__body--preloading');
     preloader.remove();
     gsap.set(site, { clearProps: 'opacity,transform,visibility' });
-    document.dispatchEvent(new CustomEvent('platejka:preloader-complete'));
+    document.documentElement.dataset.pageReady = 'true';
+    document.dispatchEvent(new CustomEvent('platejka:ready'));
   };
 
   if (!shouldRun || reduceMotion || !site || !logo || fills.length === 0) {

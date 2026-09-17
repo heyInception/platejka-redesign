@@ -23,12 +23,13 @@ test('header uses semantic and accessible navigation markup', () => {
   assert.match(html, /nav__submenu--nested/);
 });
 
-test('header logo stays hidden until the preloader completion event starts its intro', () => {
+test('header logo stays hidden until the shared page readiness event starts its intro', () => {
   const js = read('src/js/components/header.js');
   const scss = read('src/scss/components/_header.scss');
 
   assert.match(scss, /&__logo-link\s*\{[\s\S]*?opacity:\s*0;[\s\S]*?visibility:\s*hidden;/);
-  assert.match(js, /platejka:preloader-complete/);
+  assert.match(js, /platejka:ready/);
+  assert.match(js, /!document\.querySelector\('\[data-preloader\]'\)/);
   assert.match(js, /\.set\(logo,\s*\{\s*autoAlpha:\s*1\s*\}\)/);
 });
 

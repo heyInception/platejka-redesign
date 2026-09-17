@@ -11,6 +11,10 @@ if (header) {
   const media = gsap.matchMedia();
   const reduceMotionQuery = '(prefers-reduced-motion: reduce)';
   const prefersReducedMotion = window.matchMedia(reduceMotionQuery).matches;
+  const pageIsReady = () => (
+    document.documentElement.dataset.pageReady === 'true'
+    || !document.querySelector('[data-preloader]')
+  );
 
   const getMenuDepth = (toggle) => {
     let depth = 1;
@@ -146,9 +150,10 @@ if (header) {
     (context) => {
       if (context.conditions.reduceMotion) {
         const showLogo = () => gsap.set(logo, { autoAlpha: 1 });
-        document.addEventListener('platejka:preloader-complete', showLogo, { once: true });
+        if (pageIsReady()) showLogo();
+        else document.addEventListener('platejka:ready', showLogo, { once: true });
 
-        return () => document.removeEventListener('platejka:preloader-complete', showLogo);
+        return () => document.removeEventListener('platejka:ready', showLogo);
       }
 
       const playLogoIntro = () => {
@@ -178,7 +183,8 @@ if (header) {
         intro = playLogoIntro();
       };
 
-      document.addEventListener('platejka:preloader-complete', startLogoIntro, { once: true });
+      if (pageIsReady()) startLogoIntro();
+      else document.addEventListener('platejka:ready', startLogoIntro, { once: true });
 
       const hover = gsap.timeline({
         paused: true,
@@ -195,7 +201,7 @@ if (header) {
       logo.addEventListener('pointerenter', playLogoHover);
 
       return () => {
-        document.removeEventListener('platejka:preloader-complete', startLogoIntro);
+        document.removeEventListener('platejka:ready', startLogoIntro);
         logo.removeEventListener('pointerenter', playLogoHover);
         intro?.kill();
         hover.kill();
