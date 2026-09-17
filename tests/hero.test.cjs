@@ -21,3 +21,16 @@ test('hero exposes semantic calculator and reusable content contract', () => {
   assert.match(html, /<output[^>]+data-role="grand-total"/);
   assert.match(html, /<dialog[^>]+data-contact-dialog/);
 });
+
+test('hero component binds calculator, dialog and ACF-friendly data attributes', () => {
+  const js = read('src/js/components/hero.js');
+  const imports = read('src/js/_components.js');
+
+  assert.match(imports, /import ['"]\.\/components\/hero['"]/);
+  assert.match(js, /require\(['"]\.\/hero-calculator\.cjs['"]\)/);
+  assert.match(js, /data-currency-rates/);
+  assert.match(js, /aria-pressed/);
+  assert.match(js, /showModal\(\)/);
+  assert.match(js, /data-dialog-summary/);
+  assert.match(js, /hero:calculated/);
+});
