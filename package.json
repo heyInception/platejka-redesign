@@ -4,6 +4,7 @@
     "description": "gulp-builder for weblayout",
     "main": "gulpfile.js",
     "scripts": {
+        "test": "node --test tests/*.test.cjs",
         "html": "node-w3c-validator -f lint -evH -i app/**/*.html",
         "dev": "gulp",
         "build": "gulp build",

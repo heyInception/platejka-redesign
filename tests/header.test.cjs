@@ -33,8 +33,8 @@ test('header logo stays hidden until the preloader completion event starts its i
 });
 
 test('all navigation controls use the UI kit hover treatment', () => {
-  const css = sass.compile(
-    path.join(root, 'src/scss/components/_header.scss'),
+  const css = sass.compileString(
+    `${read('src/scss/mixins/_breakpoint.scss')}\n${read('src/scss/mixins/_burger.scss')}\n${read('src/scss/components/_header.scss')}`,
     { style: 'expanded' },
   ).css;
 

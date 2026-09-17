@@ -1,6 +1,6 @@
 
 // Реализация бургер-меню
-import { burger } from './functions/burger';
+import './functions/burger';
 // Реализация табов
 import GraphTabs from 'graph-tabs';
 const tabs = new GraphTabs('spec');
@@ -88,5 +88,4 @@ let swiperSlider = new Swiper(".slider__start", {
 // };
 
 // validateForms('.form-1', rules1, afterForm);
-
 

@@ -1,63 +1,51 @@
 /* stylelint-disable */
 
 @mixin burger {
-    --burger-width: 40px;
-    --burger-height: 40px;
+    --burger-width: 20px;
+    --burger-height: 20px;
+    --burger-line-width: 15px;
     --burger-line-height: 2px;
     position: relative;
     border: none;
-    padding: 8px;
+    padding: 0;
     width: var(--burger-width);
     height: var(--burger-height);
-    color: #000;
-    background-color: transparent;
+    color: var(--icon-primary);
     cursor: pointer;
     background-color: transparent;
-    border-radius: 4px;
+    border-radius: 2px;
+
     &::before,
     &::after {
         content: "";
         position: absolute;
-        left: 8px;
-        width: 26px;
+        left: 50%;
+        width: var(--burger-line-width);
         height: var(--burger-line-height);
+        border-radius: var(--burger-line-height);
         background-color: currentColor;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
         transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
     }
+
     &::before {
-        top: 12px;
+        top: 7px;
     }
+
     &::after {
-        top: 26px;
-        width: 20px;
-        left: auto;
-        right: 6px;
+        top: 13px;
     }
-    &__line {
-        position: absolute;
-        left: 8px;
-        top: 50%;
-        width: 26px;
-        height: var(--burger-line-height);
-        background-color: currentColor;
-        transform: translateY(-50%);
-        transition: transform 0.3s ease-in-out;
-    }
+
     &__active {
         &::before {
             top: 50%;
-            transform: rotate(45deg);
-            transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+            transform: translate(-50%, -50%) rotate(45deg);
         }
+
         &::after {
-            width: 26px;
             top: 50%;
-            transform: rotate(-45deg);
-            transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
-        }
-        .burger__line {
-            transform: scale(0);
-            transition: transform 0.3s ease-in-out;
+            transform: translate(-50%, -50%) rotate(-45deg);
         }
     }
 }

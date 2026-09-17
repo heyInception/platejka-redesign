@@ -71,6 +71,7 @@ if (header) {
 
     gsap.set(submenu, {
       autoAlpha: 0,
+      height: window.matchMedia('(max-width: 1024px)').matches ? 0 : 'auto',
       x: isNested && !prefersReducedMotion ? -10 : 0,
       y: !isNested && !prefersReducedMotion ? -10 : 0,
     });
@@ -82,7 +83,7 @@ if (header) {
       onStart: () => gsap.set(submenu, { pointerEvents: 'auto' }),
       onReverseComplete: () => gsap.set(submenu, { pointerEvents: 'none' }),
     })
-      .to(submenu, { autoAlpha: 1, x: 0, y: 0, duration })
+      .to(submenu, { autoAlpha: 1, height: 'auto', x: 0, y: 0, duration })
       .to(entries, {
         autoAlpha: 1,
         y: 0,
@@ -111,15 +112,19 @@ if (header) {
       }
     });
 
-    item.addEventListener('focusin', () => openMenu(controller));
+    item.addEventListener('focusin', () => {
+      if (window.matchMedia('(min-width: 1025px)').matches) {
+        openMenu(controller);
+      }
+    });
     item.addEventListener('focusout', (event) => {
-      if (!item.contains(event.relatedTarget)) {
+      if (window.matchMedia('(min-width: 1025px)').matches && !item.contains(event.relatedTarget)) {
         closeMenu(controller);
       }
     });
 
     item.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && window.matchMedia('(min-width: 1025px)').matches) {
         event.stopPropagation();
         closeMenu(controller);
         toggle.focus();
