@@ -5,6 +5,7 @@ const {
   formatMoney,
   formatRate,
 } = require('./hero-calculator.cjs');
+const { getHeroImageOffset } = require('./hero-motion.cjs');
 
 const currencySymbols = {
   CNY: '¥',
@@ -26,6 +27,32 @@ function setCurrency(buttons, activeButton) {
     button.classList.toggle('is-active', isActive);
     button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
+}
+
+function animateCurrencyIndicator(root, activeButton, immediate = false) {
+  const indicator = root.querySelector('[data-currency-indicator]');
+  const firstButton = root.querySelector('[data-currency]');
+  if (!indicator || !firstButton || !activeButton) return;
+
+  const x = activeButton.offsetLeft - firstButton.offsetLeft;
+  if (immediate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.set(indicator, { x, scaleX: 1 });
+    return;
+  }
+
+  gsap.timeline({ defaults: { overwrite: 'auto' } })
+    .to(indicator, {
+      x,
+      scaleX: 1.08,
+      transformOrigin: x > Number(gsap.getProperty(indicator, 'x')) ? 'right center' : 'left center',
+      duration: 0.42,
+      ease: 'power3.inOut',
+    })
+    .to(indicator, {
+      scaleX: 1,
+      duration: 0.18,
+      ease: 'power2.out',
+    }, '-=0.08');
 }
 
 function writeResult(root, result) {
@@ -111,6 +138,7 @@ function initHeroCalculator(root, dialog) {
       if (!rates[button.dataset.currency]) return;
       currency = button.dataset.currency;
       setCurrency(buttons, button);
+      animateCurrencyIndicator(root, button);
       calculate();
     });
   });
@@ -133,7 +161,13 @@ function initHeroCalculator(root, dialog) {
     openContactDialog(dialog, buildSummary(Number(input.value), currency, result), event.submitter);
   });
 
-  setCurrency(buttons, buttons.find((button) => button.dataset.currency === currency));
+  const activeButton = buttons.find((button) => button.dataset.currency === currency);
+  setCurrency(buttons, activeButton);
+  animateCurrencyIndicator(root, activeButton, true);
+  window.addEventListener('resize', () => {
+    const selectedButton = buttons.find((button) => button.getAttribute('aria-pressed') === 'true');
+    animateCurrencyIndicator(root, selectedButton, true);
+  });
   calculate();
 }
 
@@ -214,6 +248,7 @@ function initHeroMotion(root) {
         intro.eventCallback('onComplete', () => ambient.play());
 
         let handlePointerMove;
+        let handlePointerLeave;
         if (desktop && image) {
           const moveX = gsap.quickTo(image, 'x', { duration: 0.7, ease: 'power3.out' });
           const moveY = gsap.quickTo(image, 'y', { duration: 0.7, ease: 'power3.out' });
@@ -222,14 +257,20 @@ function initHeroMotion(root) {
             const bounds = panel.getBoundingClientRect();
             const x = (event.clientX - bounds.left) / bounds.width - 0.5;
             const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-            moveX(x * 18);
+            moveX(getHeroImageOffset(x));
             moveY(y * 12);
           };
+          handlePointerLeave = () => {
+            moveX(0);
+            moveY(0);
+          };
           panel.addEventListener('pointermove', handlePointerMove);
+          panel.addEventListener('pointerleave', handlePointerLeave);
         }
 
         return () => {
           if (handlePointerMove) panel.removeEventListener('pointermove', handlePointerMove);
+          if (handlePointerLeave) panel.removeEventListener('pointerleave', handlePointerLeave);
           intro.kill();
           ambient.kill();
           gsap.killTweensOf([image, blur]);

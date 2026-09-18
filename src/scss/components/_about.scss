@@ -1,0 +1,369 @@
+.about {
+  position: relative;
+  overflow: clip;
+  padding: 112px 0 64px;
+  color: var(--text-primary);
+  background: var(--surface-primary);
+
+  p,
+  address {
+    margin: 0;
+  }
+
+  &__layout {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 592px minmax(0, 688px);
+    gap: 32px;
+  }
+
+  &__media {
+    overflow: hidden;
+    border-radius: 32px;
+    width: 100%;
+    will-change: transform, opacity;
+    aspect-ratio: 1;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  &__intro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    will-change: transform, opacity;
+    gap: 24px;
+
+    h2 {
+      position: absolute;
+      font-size: 0;
+      visibility: hidden;
+    }
+  }
+
+  &__badge {
+    border-radius: 12px;
+    padding: 4px 12px;
+    font: 700 14px / 20px var(--font-family);
+    letter-spacing: -0.02em;
+    background: var(--surface-tertiary);
+    backdrop-filter: blur(12px);
+  }
+
+  &__title {
+    max-width: 688px;
+    font: 700 48px / 52px var(--font-family);
+    letter-spacing: -0.04em;
+  }
+
+  &__title-accent {
+    color: var(--decorative-warm);
+  }
+
+  &__description {
+    font: 500 16px / 24px var(--font-family);
+    color: var(--text-secondary);
+  }
+
+  &__agreement {
+    &::before,
+    &::after {
+      content: "";
+      flex: 0 0 20px;
+      width: 20px;
+      height: 20px;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    &::before {
+      background-image: url("../../img/svg/About-Sample-Agency-Agreement.svg");
+    }
+
+    &::after {
+      background-image: url("../../img/svg/right-icon.svg");
+    }
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  &__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    will-change: transform, opacity;
+    gap: 16px;
+  }
+
+  &__cta-button {
+    width: 336px;
+  }
+
+  &__address {
+    display: flex;
+    align-items: center;
+    font: normal 700 14px / 20px var(--font-family);
+    letter-spacing: -0.02em;
+    gap: 8px;
+
+    &::before {
+      content: "";
+      flex: 0 0 20px;
+      width: 20px;
+      height: 20px;
+      background: url("../../img/svg/about-loc.svg") center / contain no-repeat;
+    }
+  }
+
+  &__title-check,
+  &__title-bank {
+    display: inline-block;
+    vertical-align: -5px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+}
+
+.about-card {
+  display: flex;
+  border-radius: 24px;
+  padding: 8px;
+  min-width: 0;
+  background: var(--surface-secondary);
+  will-change: transform, opacity;
+  gap: 12px;
+
+  &__image {
+    position: relative;
+    flex: 0 0 144px;
+    overflow: hidden;
+    border-radius: 16px;
+    width: 144px;
+    height: 144px;
+    background: #d7dbe6;
+
+    img {
+      position: absolute;
+      left: 50%;
+      top: 13px;
+      display: block;
+      border-radius: 6px;
+      width: 120px;
+      height: 131px;
+      object-fit: cover;
+      transform: translateX(-50%);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 8px;
+    min-width: 0;
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  &__logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+
+    &_sro {
+      width: 25px;
+    }
+  }
+
+  &__title {
+    max-width: 144px;
+    font: 500 18px / 28px var(--font-family);
+  }
+
+  &__link {
+    min-width: 100px;
+    color: var(--text-brand);
+    background: var(--surface-brand-subtle);
+
+    &:hover {
+      color: var(--text-overlay-primary);
+      background: var(--surface-brand);
+      opacity: 1;
+    }
+  }
+}
+
+.about-dialog {
+  border: 0;
+  border-radius: 24px;
+  padding: 0;
+  width: min(calc(100% - 32px), 480px);
+  box-shadow: 0 24px 80px rgb(37 37 42 / 28%);
+  color: var(--text-primary);
+  background: var(--surface-primary);
+
+  &::backdrop {
+    background: rgb(37 37 42 / 64%);
+    backdrop-filter: blur(8px);
+  }
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    gap: 16px;
+  }
+
+  &__close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 28px;
+    color: var(--text-primary);
+    background: var(--surface-secondary);
+
+    &:focus-visible {
+      outline: 2px solid var(--border-brand);
+      outline-offset: 2px;
+    }
+  }
+
+  &__title {
+    padding-right: 40px;
+    font: 700 28px / 32px var(--font-family);
+    letter-spacing: -0.02em;
+  }
+
+  &__text {
+    font: 500 16px / 24px var(--font-family);
+    color: var(--text-secondary);
+  }
+}
+
+@include tablet {
+  .about {
+    padding: 64px 0 40px;
+
+    .container {
+      padding: 0 8px;
+    }
+
+    &__layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    &__content {
+      gap: 24px;
+    }
+
+    &__intro {
+      gap: 16px;
+    }
+
+    &__badge {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    &__title {
+      font-size: 30px;
+      line-height: 34px;
+      letter-spacing: -0.02em;
+    }
+
+    &__description {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    &__cards {
+      grid-template-columns: 1fr;
+      margin-top: 0;
+      gap: 16px;
+    }
+
+    &__cta {
+      margin-top: 40px;
+    }
+
+    &__cta-button {
+      padding-right: 16px;
+      padding-left: 16px;
+      width: min(336px, 100%);
+    }
+
+    &__address {
+      text-align: center;
+    }
+
+    &__title-check,
+    &__title-bank {
+      vertical-align: -3px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .about-card {
+    &__title {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  .about-dialog__content {
+    padding: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about__media,
+  .about__intro,
+  .about-card,
+  .about__cta {
+    will-change: auto;
+  }
+
+  .about *,
+  .about-dialog * {
+    transition-duration: 10ms;
+    scroll-behavior: auto;
+  }
+}

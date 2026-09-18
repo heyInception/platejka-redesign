@@ -163,11 +163,15 @@
       gap: 8px;
     }
 
-    &_registry,
-    &_association {
+    &_registry {
       justify-content: space-between;
       color: var(--text-overlay-primary);
       background: var(--surface-inverse);
+    }
+    &_association {
+      justify-content: space-between;
+      color: var(--surface-inverse);
+      background: var(--decorative-lime);
     }
   }
 
@@ -178,15 +182,10 @@
     font: 700 44px / 48px var(--font-family);
     letter-spacing: -0.04em;
 
-    &::before,
-    &::after {
-      content: "";
+    img {
       width: 22px;
       height: 72px;
-      border: solid var(--decorative-warm);
-      border-width: 0 3px;
-      border-radius: 50%;
-      transform: skew(-9deg);
+      object-fit: contain;
     }
   }
 
@@ -218,16 +217,7 @@
     bottom: -50px;
     width: 161px;
     height: 161px;
-    border-radius: 50%;
-    opacity: 0.85;
-
-    &_registry {
-      background: radial-gradient(circle at 35% 35%, #fff 0 5%, var(--decorative-warm) 6% 35%, transparent 36%);
-    }
-
-    &_association {
-      background: repeating-radial-gradient(circle at center, var(--decorative-lime) 0 5px, transparent 6px 12px);
-    }
+    object-fit: contain;
   }
 }
 
@@ -243,29 +233,22 @@
   &__banner {
     order: 1;
     display: flex;
-    min-height: 88px;
     align-items: center;
-    justify-content: center;
     gap: 8px;
     border-radius: 16px 16px 0 0;
     padding: 16px;
-    font: 700 14px / 20px var(--font-family);
-    letter-spacing: -0.02em;
-
+    margin: 16px;
+    background: linear-gradient(90deg, var(--surface-primary), #ffdaae);
+    border-radius: 12px;
+    padding: 16px;
     span {
-      display: flex;
-      min-height: 56px;
-      flex: 1;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      padding: 16px;
-      background: linear-gradient(90deg, var(--surface-primary), #ffdaae);
+      font: 700 14px / 143% var(--font-family);
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--surface-inverse);
     }
-
     img {
-      position: absolute;
-      margin-left: -304px;
+      vertical-align: middle;
     }
   }
 
@@ -287,57 +270,44 @@
   }
 
   &__currencies {
+    position: relative;
+    isolation: isolate;
     display: flex;
     width: 100%;
     background: var(--surface-tertiary);
   }
 
+  &__indicator {
+    position: absolute;
+    z-index: -1;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc((100% - 12px) / 2);
+    border-radius: 12px;
+    background: var(--surface-primary);
+    box-shadow:
+      0 1px 2px rgb(37 37 42 / 8%),
+      0 8px 20px rgb(37 37 42 / 6%);
+    will-change: transform;
+  }
+
   &__currency {
+    position: relative;
+    z-index: 1;
     flex: 1 1 0;
 
     &[aria-pressed="true"] {
-      box-shadow: 0 1px 2px rgba(37, 37, 42, 0.08);
-      background: var(--surface-primary);
+      box-shadow: none;
+      background: transparent;
     }
   }
 
   &__flag {
-    position: relative;
-    display: inline-flex;
-    overflow: hidden;
     width: 20px;
     height: 20px;
     flex: 0 0 20px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-
-    &_cny {
-      color: #ffde00;
-      background: #de2910;
-
-      &::before {
-        content: "★";
-        font-size: 10px;
-        line-height: 1;
-        transform: translate(-2px, -2px);
-      }
-    }
-
-    &_usd {
-      background: repeating-linear-gradient(to bottom, #b22234 0 2px, #fff 2px 4px);
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 3px;
-        left: 2px;
-        width: 9px;
-        height: 8px;
-        border-radius: 1px;
-        background: #3c3b6e;
-      }
-    }
+    object-fit: cover;
   }
 
   &__field {
@@ -362,6 +332,17 @@
     padding-right: 76px;
     padding-left: 32px;
     font-weight: 700;
+
+    &[type="number"] {
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    &[type="number"]::-webkit-inner-spin-button,
+    &[type="number"]::-webkit-outer-spin-button {
+      appearance: none;
+      margin: 0;
+    }
   }
 
   &__symbol {
@@ -408,6 +389,7 @@
 
   &__submit {
     width: 100%;
+    padding: 0;
   }
 
   &__note {
@@ -610,11 +592,9 @@
       font-size: 22px;
       line-height: 24px;
 
-      &::before,
-      &::after {
+      img {
         width: 15px;
         height: 48px;
-        border-width: 0 2px;
       }
     }
 
@@ -655,12 +635,12 @@
 
     &__banner {
       order: 2;
-      min-height: 64px;
-      padding: 4px;
-
+      min-height: 56px;
+      padding: 0;
+      margin: 8px 4px;
+      justify-content: center;
       span {
-        min-height: 56px;
-        padding: 14px 8px 14px 38px;
+        padding: 0;
         white-space: nowrap;
       }
 

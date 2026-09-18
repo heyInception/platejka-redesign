@@ -137,7 +137,11 @@ h6 {
   letter-spacing: -0.02em;
   color: var(--text-overlay-primary);
   background: var(--surface-brand);
-  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease;
   cursor: pointer;
   gap: 8px;
 
@@ -205,7 +209,27 @@ h6 {
     &:disabled,
     &[aria-disabled="true"] {
       color: var(--text-overlay-secondary);
-      background: var(--surface-overlay);
+      background: var(--surface-inverse);
+      opacity: 0.4;
+    }
+  }
+
+  &--inverse {
+    color: var(--text-overlay-primary);
+    background: var(--surface-inverse);
+
+    &:focus-visible {
+      outline-color: var(--text-inverse-primary);
+    }
+
+    &:hover:not(:disabled) {
+      background: rgb(255 255 255 / 16%);
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+      color: var(--text-inverse-secondary);
+      background: var(--surface-inverse);
       opacity: 0.4;
     }
   }
@@ -219,7 +243,10 @@ h6 {
   font: 500 16px / 24px var(--font-family);
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  transition: opacity 0.2s ease, color 0.2s ease, outline-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease,
+    outline-color 0.2s ease;
   gap: 4px;
 
   &:focus-visible {
@@ -275,7 +302,10 @@ h6 {
   font: 500 16px / 24px var(--font-family);
   color: var(--text-primary);
   background: transparent;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
   cursor: pointer;
   gap: 6px;
 
@@ -313,7 +343,10 @@ h6 {
   letter-spacing: -0.02em;
   color: var(--text-primary);
   background-color: var(--surface-primary);
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:focus {
     outline: 0;

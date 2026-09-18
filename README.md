@@ -65,6 +65,17 @@ npm run dev
 
 Рекомендуемые ACF-поля: `hero_title_primary`, `hero_title_secondary`, `hero_description`, `hero_background`, `hero_blur`, `hero_currency_rates`, карточки преимуществ и подписи калькулятора. Структуру HTML и `data-*`-атрибуты при интеграции следует сохранить — JavaScript не зависит от конкретных текстов.
 
+### About
+
+- Адаптивная секция о компании собрана по desktop- и mobile-макетам Figma.
+- Каждый экземпляр `[data-about]` автономен: на одной странице можно размещать несколько секций без конфликтов селекторов и `id`.
+- Карточки документов и ссылка на образец договора подготовлены для подключения реальных URL.
+- CTA открывает собственный нативный `<dialog>` с закрытием по кнопке, клику на фон и `Escape`; после закрытия фокус возвращается на кнопку открытия.
+- При первом появлении секции в viewport запускается GSAP-таймлайн для изображения, текста, карточек и CTA.
+- При `prefers-reduced-motion: reduce` анимация отключается.
+
+Разметка находится в `src/partials/about.html`, стили — в `src/scss/components/_about.scss`, поведение — в `src/js/components/about.js`. Для переиспользования следует сохранять корневой атрибут `data-about` и вложенные `data-about-*`-атрибуты.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -87,9 +98,11 @@ npm run dev
 │   ├── img/                         # Изображения и SVG
 │   ├── js/
 │   │   ├── components/
+│   │   │   ├── about.js             # Диалог и GSAP-анимация About
 │   │   │   ├── header.js            # Навигация и анимация логотипа
 │   │   │   ├── hero.js              # Калькулятор, диалог и GSAP-анимация Hero
 │   │   │   ├── hero-calculator.cjs   # Чистая модель расчёта
+│   │   │   ├── hero-motion.cjs       # Ограничение координат параллакса Hero
 │   │   │   ├── preloader.js         # GSAP-таймлайн прелоадера
 │   │   │   └── preloader-state.cjs  # Cookie-состояние прелоадера
 │   │   ├── _components.js           # Подключение компонентов
@@ -99,11 +112,13 @@ npm run dev
 │   │   ├── head.html
 │   │   ├── header.html
 │   │   ├── footer.html
+│   │   ├── about.html
 │   │   ├── hero.html
 │   │   └── preloader.html
 │   ├── resources/                   # Шрифты и прочие ресурсы
 │   ├── scss/
 │   │   ├── components/
+│   │   │   ├── _about.scss
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
 │   │   │   └── _preloader.scss
@@ -116,10 +131,12 @@ npm run dev
 │   ├── china.html
 │   └── index.html
 ├── tests/
+│   ├── about.test.cjs
 │   ├── header-menu.test.cjs
 │   ├── header.test.cjs
 │   ├── preloader.test.cjs
 │   ├── hero-calculator.test.cjs
+│   ├── hero-motion.test.cjs
 │   ├── hero.test.cjs
 │   └── ui-components.test.cjs
 ├── gulpfile.js
@@ -147,6 +164,8 @@ npm run build
 - размеры и состояния бургера;
 - структуру мобильного меню, вложенные уровни и breakpoint-миксины;
 - GSAP-настройки и поддержку reduced motion;
+- семантику, адаптивные стили, повторное использование и диалог секции About;
+- ограничение координат параллакса Hero;
 - отсутствие вспышки логотипа до завершения прелоадера;
 - установку и срок действия cookie прелоадера;
 - варианты и доступные состояния UI-компонентов.
