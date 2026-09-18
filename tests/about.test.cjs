@@ -20,7 +20,7 @@ test('about partial exposes a semantic, repeatable section contract', () => {
   assert.doesNotMatch(html, /\sid="[^"]+"/);
 });
 
-test('about component initializes every instance and keeps dialog behavior scoped', () => {
+test('about component initializes every dialog instance without section animation', () => {
   const js = read('src/js/components/about.js');
   const imports = read('src/js/_components.js');
 
@@ -30,12 +30,10 @@ test('about component initializes every instance and keeps dialog behavior scope
   assert.match(js, /showModal\(\)/);
   assert.match(js, /dialog\.close\(\)/);
   assert.match(js, /dialogOpener/);
-  assert.match(js, /IntersectionObserver/);
-  assert.match(js, /gsap\.timeline/);
-  assert.match(js, /prefers-reduced-motion: reduce/);
+  assert.doesNotMatch(js, /from ['"]gsap['"]|IntersectionObserver|initAboutMotion|gsap\./);
 });
 
-test('about styles compile desktop, mobile, dialog and reduced-motion states', () => {
+test('about styles compile desktop, mobile and dialog states without animation hints', () => {
   const css = sass.compile(path.join(root, 'src/scss/main.scss')).css;
 
   assert.match(css, /\.about__layout\s*\{[^}]*grid-template-columns:\s*592px\s+minmax\(0,\s*688px\)/s);
@@ -43,5 +41,5 @@ test('about styles compile desktop, mobile, dialog and reduced-motion states', (
   assert.match(css, /\.about-card__image\s*\{[^}]*width:\s*144px[^}]*height:\s*144px/s);
   assert.match(css, /\.about-dialog::backdrop/);
   assert.match(css, /@media \(max-width:\s*576px\)/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.doesNotMatch(css, /\.about(?:__media|__intro|__cta| |-card)[^{]*\{[^}]*will-change/s);
 });

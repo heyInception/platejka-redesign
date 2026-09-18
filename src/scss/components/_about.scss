@@ -22,7 +22,6 @@
     overflow: hidden;
     border-radius: 32px;
     width: 100%;
-    will-change: transform, opacity;
     aspect-ratio: 1;
 
     img {
@@ -46,7 +45,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    will-change: transform, opacity;
     gap: 24px;
 
     h2 {
@@ -112,7 +110,6 @@
     flex-direction: column;
     align-items: center;
     margin-top: 40px;
-    will-change: transform, opacity;
     gap: 16px;
   }
 
@@ -152,7 +149,6 @@
   padding: 8px;
   min-width: 0;
   background: var(--surface-secondary);
-  will-change: transform, opacity;
   gap: 12px;
 
   &__image {
@@ -350,20 +346,5 @@
 
   .about-dialog__content {
     padding: 24px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about__media,
-  .about__intro,
-  .about-card,
-  .about__cta {
-    will-change: auto;
-  }
-
-  .about *,
-  .about-dialog * {
-    transition-duration: 10ms;
-    scroll-behavior: auto;
   }
 }
