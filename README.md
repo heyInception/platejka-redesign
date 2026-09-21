@@ -84,6 +84,15 @@ npm run dev
 
 Разметка находится в `src/partials/shipments.html`, стили — в `src/scss/components/_shipments.scss`, поведение — в `src/js/components/shipments.js`, а чистая функция расчёта позиции — в `src/js/components/shipments-slider.cjs`.
 
+### Гарантии
+
+- Секция с четырьмя карточками собрана по desktop- и mobile-макетам Figma и подключена на странице `src/china.html`.
+- Начиная с `@include tablet` первая карточка остаётся на месте, а три остальные листаются горизонтально. Слайдер поддерживает свайп, перетаскивание мышью и стрелки клавиатуры; GSAP фиксирует ближайшую карточку после отпускания.
+- Изображения и иконки сохранены в `src/img/guarantees/`. При `prefers-reduced-motion: reduce` анимация фиксации отключается.
+- Кнопки реестра ЦБ и выписки СРО временно отключены, пока нет адресов документов. После получения URL их нужно заменить ссылками.
+
+Разметка находится в `src/partials/guarantees.html`, стили — в `src/scss/components/_guarantees.scss`, поведение — в `src/js/components/guarantees.js`.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -107,6 +116,7 @@ npm run dev
 │   ├── js/
 │   │   ├── components/
 │   │   │   ├── about.js             # Диалог секции About
+│   │   │   ├── guarantees.js        # Мобильный слайдер секции Гарантии
 │   │   │   ├── header.js            # Навигация и анимация логотипа
 │   │   │   ├── hero.js              # Калькулятор, диалог и GSAP-анимация Hero
 │   │   │   ├── hero-calculator.cjs   # Чистая модель расчёта
@@ -123,12 +133,14 @@ npm run dev
 │   │   ├── header.html
 │   │   ├── footer.html
 │   │   ├── about.html
+│   │   ├── guarantees.html
 │   │   ├── hero.html
 │   │   └── preloader.html
 │   ├── resources/                   # Шрифты и прочие ресурсы
 │   ├── scss/
 │   │   ├── components/
 │   │   │   ├── _about.scss
+│   │   │   ├── _guarantees.scss
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
 │   │   │   └── _preloader.scss
