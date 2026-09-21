@@ -74,6 +74,16 @@ npm run dev
 
 Разметка находится в `src/partials/about.html`, стили — в `src/scss/components/_about.scss`, поведение — в `src/js/components/about.js`. Для переиспользования следует сохранять корневой атрибут `data-about` и вложенные `data-about-*`-атрибуты.
 
+### Shipments
+
+- Адаптивная секция с шестью карточками сценариев поставок, собранная по desktop- и mobile-макетам Figma.
+- На desktop используется сетка из двух колонок; начиная с breakpoint `@include tablet` карточки становятся горизонтальным слайдером шириной `280px`.
+- Слайдер поддерживает свайп, перетаскивание мышью и переключение стрелками клавиатуры. После отпускания лента плавно фиксируется на ближайшей карточке через GSAP.
+- Изображения карточек один раз появляются при входе секции в область просмотра через GSAP ScrollTrigger. При `prefers-reduced-motion: reduce` анимации отключаются.
+- Карточки не содержат ссылок или кнопок; корневые `data-shipments` и `data-shipments-*`-атрибуты сохраняют контракт JavaScript-компонента.
+
+Разметка находится в `src/partials/shipments.html`, стили — в `src/scss/components/_shipments.scss`, поведение — в `src/js/components/shipments.js`, а чистая функция расчёта позиции — в `src/js/components/shipments-slider.cjs`.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -103,6 +113,8 @@ npm run dev
 │   │   │   ├── hero-motion.cjs       # Ограничение координат параллакса Hero
 │   │   │   ├── preloader.js         # GSAP-таймлайн прелоадера
 │   │   │   └── preloader-state.cjs  # Cookie-состояние прелоадера
+│   │   │   ├── shipments.js         # ScrollTrigger-анимация и слайдер Shipments
+│   │   │   └── shipments-slider.cjs # Расчёт ближайшей карточки
 │   │   ├── _components.js           # Подключение компонентов
 │   │   ├── _functions.js            # Общие функции
 │   │   └── main.js                  # Точка входа JavaScript
@@ -136,6 +148,8 @@ npm run dev
 │   ├── hero-calculator.test.cjs
 │   ├── hero-motion.test.cjs
 │   ├── hero.test.cjs
+│   ├── shipments-slider.test.cjs
+│   ├── shipments.test.cjs
 │   └── ui-components.test.cjs
 ├── gulpfile.js
 ├── package.json
@@ -163,6 +177,8 @@ npm run build
 - структуру мобильного меню, вложенные уровни и breakpoint-миксины;
 - GSAP-настройки и поддержку reduced motion;
 - семантику, адаптивные стили, повторное использование и диалог секции About;
+- семантику, отсутствие ссылок, адаптивную сетку и GSAP-настройки секции Shipments;
+- расчёт ближайшей карточки мобильного слайдера Shipments;
 - ограничение координат параллакса Hero;
 - отсутствие вспышки логотипа до завершения прелоадера;
 - установку и срок действия cookie прелоадера;
