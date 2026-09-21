@@ -5,3 +5,4 @@ import './components/about';
 import './components/shipments';
 import './components/guarantees';
 import './components/documents';
+import './components/review';

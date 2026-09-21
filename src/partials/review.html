@@ -1,0 +1,39 @@
+<section class="review" aria-labelledby="review-title">
+  <div class="container">
+    <div class="review__intro">
+      <span class="review__eyebrow">Отзывы</span>
+      <h2 id="review-title">Клиенты остаются<br>с нами надолго</h2>
+      <p>Обещание стопроцентной проходимости проверить невозможно, поэтому мы его не даём.</p>
+    </div>
+    <div class="review__body">
+      <div class="review__tabs" role="tablist" aria-label="Вид отзывов">
+        <button class="review__tab" type="button" role="tab" id="review-video-tab" aria-controls="review-video-panel" aria-selected="true">Видео-отзывы</button>
+        <button class="review__tab" type="button" role="tab" id="review-text-tab" aria-controls="review-text-panel" aria-selected="false" tabindex="-1">Текстовые</button>
+      </div>
+      <div id="review-video-panel" role="tabpanel" aria-labelledby="review-video-tab">
+        <div class="review__viewport">
+          <div class="review__track">
+            <article class="review__card" style="--review-image: url('../img/review/img-1.png')"><div><h3>Елена С.</h3><p>Финансовый директор<br>ООО «Смирнов Групп»</p><button type="button" class="review__watch" data-review-video="../img/review/70960-536644237_medium.mp4">Смотреть отзыв</button></div></article>
+            <article class="review__card" style="--review-image: url('../img/review/img-2.png')"><div><h3>Милена К.</h3><p>Генеральный директор<br>ООО «Самострой7»</p><button type="button" class="review__watch" data-review-video="">Смотреть отзыв</button></div></article>
+            <article class="review__card" style="--review-image: url('../img/review/img-3.png')"><div><h3>Дарья Б.</h3><p>Менеджер по работе<br>с клиентами</p><button type="button" class="review__watch" data-review-video="">Смотреть отзыв</button></div></article>
+          </div>
+        </div>
+        <div class="review__controls"><button type="button" class="review__arrow review__arrow--prev" aria-label="Предыдущий отзыв">‹</button><button type="button" class="review__arrow review__arrow--next" aria-label="Следующий отзыв">›</button></div>
+      </div>
+      <div id="review-text-panel" role="tabpanel" aria-labelledby="review-text-tab" hidden></div>
+    </div>
+  </div>
+  <dialog class="review__dialog" aria-labelledby="review-dialog-title">
+    <button type="button" class="review__close" aria-label="Закрыть отзыв">×</button>
+    <div class="review__dialog-card">
+      <video preload="none" playsinline></video>
+      <div class="review__loading" role="status" aria-label="Загрузка видео" hidden></div>
+      <div class="review__dialog-caption">
+        <h2 id="review-dialog-title"></h2>
+        <p class="review__dialog-role"></p>
+        <p class="review__video-empty">Видео скоро появится.</p>
+        <p class="review__video-error" hidden>Не удалось загрузить видео.</p>
+      </div>
+    </div>
+  </dialog>
+</section>
