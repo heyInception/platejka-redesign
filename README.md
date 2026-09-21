@@ -93,6 +93,15 @@ npm run dev
 
 Разметка находится в `src/partials/guarantees.html`, стили — в `src/scss/components/_guarantees.scss`, поведение — в `src/js/components/guarantees.js`.
 
+### Документы для начала работы
+
+- Секция с четырьмя карточками подключена на странице `src/china.html`. На desktop карточки расположены сеткой 2 × 2.
+- Начиная с `@include tablet` карточки листаются горизонтально: поддерживаются свайп, перетаскивание мышью и стрелки клавиатуры. GSAP фиксирует карточку после перетаскивания и учитывает `prefers-reduced-motion`.
+- Во всех превью временно используется `src/img/documents/doc.png`. Иконки форматов и скачивания находятся в той же папке.
+- Ссылки «Скачать» пока ведут на `#`; после получения файлов их адреса нужно заменить реальными URL.
+
+Разметка находится в `src/partials/documents.html`, стили — в `src/scss/components/_documents.scss`, поведение — в `src/js/components/documents.js`.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -116,6 +125,7 @@ npm run dev
 │   ├── js/
 │   │   ├── components/
 │   │   │   ├── about.js             # Диалог секции About
+│   │   │   ├── documents.js         # Мобильный слайдер документов
 │   │   │   ├── guarantees.js        # Мобильный слайдер секции Гарантии
 │   │   │   ├── header.js            # Навигация и анимация логотипа
 │   │   │   ├── hero.js              # Калькулятор, диалог и GSAP-анимация Hero
@@ -133,6 +143,7 @@ npm run dev
 │   │   ├── header.html
 │   │   ├── footer.html
 │   │   ├── about.html
+│   │   ├── documents.html
 │   │   ├── guarantees.html
 │   │   ├── hero.html
 │   │   └── preloader.html
@@ -140,6 +151,7 @@ npm run dev
 │   ├── scss/
 │   │   ├── components/
 │   │   │   ├── _about.scss
+│   │   │   ├── _documents.scss
 │   │   │   ├── _guarantees.scss
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
