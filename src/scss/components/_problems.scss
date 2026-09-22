@@ -1,0 +1,252 @@
+.problems {
+  padding: 112px 0 0;
+  background: var(--surface-primary);
+
+  h2 {
+    margin: 0;
+    font: 700 64px / 64px var(--font-family);
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+  h2 span {
+    color: #ae413d;
+  }
+  &__intro {
+    margin: 24px 0 40px;
+    font: 500 18px / 28px var(--font-family);
+    text-align: center;
+  }
+  &__track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+  &__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 24px;
+    min-width: 0;
+    height: 575px;
+    background: var(--surface-tertiary);
+  }
+  &__card-content {
+    padding: 24px 24px 0;
+  }
+  &__card h3 {
+    margin: 0 0 24px;
+    font: 700 28px / 32px var(--font-family);
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+  &__card dl {
+    margin: 0;
+  }
+  &__card dl > div {
+    display: grid;
+    grid-template-columns: 94px minmax(0, 1fr);
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+  &__card dt {
+    align-self: start;
+    border-radius: 12px;
+    padding: 4px 12px;
+    font: 700 14px / 20px var(--font-family);
+    letter-spacing: -0.02em;
+    background: var(--surface-overlay-strong);
+    color: #fff;
+    text-align: center;
+  }
+  &__card dl > div + div dt {
+    background: var(--surface-brand-subtle);
+    color: var(--text-brand);
+  }
+  &__card dd {
+    margin: 0;
+    font: 500 14px / 20px var(--font-family);
+  }
+  &__card > img {
+    align-self: center;
+    margin-top: auto;
+    width: 100%;
+    width: min(360px, 100%);
+    height: 306px;
+    object-fit: contain;
+  }
+  &__cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 32px;
+    margin-top: 40px;
+    padding: 48px;
+    color: #fff;
+    gap: 16px;
+    background-image: url("../img/problems/ImageBg.png");
+    background-color: var(--surface-inverse);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  &__cta h3 {
+    margin: 0 0 16px;
+    font: 700 36px / 40px var(--font-family);
+    letter-spacing: -0.02em;
+  }
+  &__cta p {
+    margin: 0;
+    max-width: 760px;
+    font: 500 18px / 28px var(--font-family);
+  }
+  &__cta ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+    gap: 12px 16px;
+  }
+  &__cta li {
+    display: flex;
+    align-items: center;
+    font: 500 16px / 24px var(--font-family);
+    gap: 4px;
+  }
+  &__cta li::before {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url("../img/problems/icon-check.svg") center / contain no-repeat;
+    content: "";
+  }
+  &__actions {
+    flex: 0 0 400px;
+    border-radius: 16px;
+    padding: 32px;
+    background: rgb(255 255 255 / 8%);
+  }
+  &__actions .ui-button {
+    width: 100%;
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+  }
+  &__actions > div {
+    display: flex;
+    margin-top: 8px;
+    gap: 8px;
+  }
+  &__actions > div a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    padding: 16px 32px;
+    width: 50%;
+    min-height: 60px;
+    font: 500 18px / 28px var(--font-family);
+    color: #fff;
+    background: var(--surface-overlay);
+    gap: 8px;
+  }
+  &__actions a:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+}
+
+@include tablet {
+  .problems {
+    padding-top: 64px;
+    .container {
+      padding: 0 8px;
+    }
+    h2 {
+      font-size: 30px;
+      line-height: 34px;
+      letter-spacing: -0.02em;
+    }
+    &__intro {
+      margin: 16px 8px 24px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &__viewport {
+      overflow: hidden;
+      outline-offset: 2px;
+      touch-action: pan-y;
+    }
+    &__viewport:focus-visible {
+      outline: 2px solid var(--border-brand);
+    }
+    &__track {
+      display: flex;
+      gap: 8px;
+      will-change: transform;
+    }
+    &__card {
+      flex: 0 0 min(280px, calc(100vw - 48px));
+      border-radius: 16px;
+      height: 429px;
+    }
+    &__card-content {
+      padding: 16px 16px 0;
+    }
+    &__card h3 {
+      margin-bottom: 24px;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: 0;
+    }
+    &__card dl > div {
+      display: block;
+    }
+    &__card > img {
+      width: 188px;
+      height: 160px;
+    }
+    &__card dt {
+      display: table;
+      margin-bottom: 8px;
+      width: 94px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &__card dd {
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    &__cta {
+      display: block;
+      border-radius: 16px;
+      margin-top: 24px;
+      padding: 16px;
+    }
+    &__cta h3 {
+      margin-bottom: 16px;
+      font-size: 24px;
+      line-height: 28px;
+    }
+    &__cta p {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    &__cta ul {
+      display: grid;
+      margin-top: 16px;
+      gap: 12px;
+    }
+    &__cta li {
+      font-size: 14px;
+      line-height: 20px;
+      white-space: nowrap;
+    }
+    &__actions {
+      margin-top: 16px;
+      padding: 16px;
+    }
+  }
+}

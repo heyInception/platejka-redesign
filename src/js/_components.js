@@ -6,3 +6,4 @@ import './components/shipments';
 import './components/guarantees';
 import './components/documents';
 import './components/review';
+import './components/problems';

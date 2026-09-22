@@ -1,0 +1,89 @@
+import { gsap } from 'gsap';
+
+document.querySelectorAll('[data-problems-slider]').forEach((viewport) => {
+  const track = viewport.querySelector('.problems__track');
+  const cards = [...track.children];
+  if (cards.length < 2) return;
+
+  const tablet = window.matchMedia('(max-width: 1024px)');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let index = 0;
+  let pointerId = null;
+  let startX = 0;
+  let startPosition = 0;
+  let moved = false;
+
+  const positionFor = (target) => {
+    const maximum = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    return -Math.min(cards[target].offsetLeft - cards[0].offsetLeft, maximum);
+  };
+
+  const goTo = (target) => {
+    index = gsap.utils.clamp(0, cards.length - 1, target);
+    gsap.to(track, {
+      x: positionFor(index),
+      duration: reducedMotion.matches ? 0 : 0.4,
+      ease: 'power2.out',
+      overwrite: true,
+    });
+  };
+
+  viewport.addEventListener('pointerdown', (event) => {
+    if (!tablet.matches || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startPosition = Number(gsap.getProperty(track, 'x'));
+    moved = false;
+    gsap.killTweensOf(track);
+    viewport.setPointerCapture(pointerId);
+  });
+
+  viewport.addEventListener('pointermove', (event) => {
+    if (event.pointerId !== pointerId) return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) > 5) moved = true;
+    if (!moved) return;
+    const minimum = positionFor(cards.length - 1);
+    gsap.set(track, { x: gsap.utils.clamp(minimum, 0, startPosition + delta) });
+  });
+
+  const release = (event) => {
+    if (event.pointerId !== pointerId) return;
+    if (viewport.hasPointerCapture(pointerId)) viewport.releasePointerCapture(pointerId);
+    pointerId = null;
+    const delta = event.clientX - startX;
+    goTo(moved && Math.abs(delta) > 40 ? index + (delta < 0 ? 1 : -1) : index);
+  };
+
+  viewport.addEventListener('pointerup', release);
+  viewport.addEventListener('pointercancel', release);
+  viewport.addEventListener('keydown', (event) => {
+    if (!tablet.matches || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    goTo(index + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+
+  const onResize = () => {
+    gsap.killTweensOf(track);
+    gsap.set(track, { x: tablet.matches ? positionFor(index) : 0 });
+  };
+  window.addEventListener('resize', onResize);
+  onResize();
+});
+
+document.querySelectorAll('.problems').forEach((root) => {
+  const dialog = root.querySelector('[data-problems-dialog]');
+  const openButton = root.querySelector('[data-problems-dialog-open]');
+  const closeButton = root.querySelector('[data-problems-dialog-close]');
+  if (!dialog || !openButton) return;
+
+  openButton.addEventListener('click', () => {
+    if (dialog.open) return;
+    dialog.showModal();
+  });
+  closeButton?.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => openButton.focus());
+});
