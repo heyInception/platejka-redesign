@@ -3,6 +3,7 @@ const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const cheerio = require('cheerio');
+const { initSeoSections } = require('../src/js/components/seo.cjs');
 
 const root = path.resolve(__dirname, '..');
 const $ = cheerio.load(fs.readFileSync(path.join(root, 'src/partials/seo.html'), 'utf8'));
@@ -20,4 +21,55 @@ test('SEO content is semantic and readable without JavaScript', () => {
   assert.match(section.text(), /сейчас, в 2026 году\./);
   assert.match(section.text(), /Почему прямые переводы в Китай не работают/);
   assert.match(section.text(), /Контроль комплаенса/);
+});
+
+function makeSeoFixture({ complete = true } = {}) {
+  const attributes = new Map();
+  const classes = new Set();
+  let clickListener;
+  const button = {
+    hidden: true,
+    textContent: '',
+    setAttribute: (name, value) => attributes.set(name, value),
+    getAttribute: (name) => attributes.get(name),
+    addEventListener: (name, listener) => {
+      if (name === 'click') clickListener = listener;
+    },
+  };
+  const content = { hidden: false };
+  const root = {
+    querySelector: (selector) => {
+      if (selector === '[data-seo-toggle]') return button;
+      return complete ? content : null;
+    },
+    classList: {
+      toggle: (name, enabled) => enabled ? classes.add(name) : classes.delete(name),
+      contains: (name) => classes.has(name),
+    },
+  };
+
+  return { root, button, content, click: () => clickListener() };
+}
+
+test('reveal is accessible and scoped to each SEO section', () => {
+  const first = makeSeoFixture();
+  const second = makeSeoFixture();
+  const incomplete = makeSeoFixture({ complete: false });
+  const doc = { querySelectorAll: () => [first.root, second.root, incomplete.root] };
+
+  assert.equal(initSeoSections(doc), 2);
+  assert.equal(first.content.hidden, true);
+  assert.equal(first.button.hidden, false);
+  assert.equal(first.button.textContent, 'Показать ещё');
+  assert.equal(first.button.getAttribute('aria-expanded'), 'false');
+
+  first.click();
+  assert.equal(first.content.hidden, false);
+  assert.equal(first.button.textContent, 'Скрыть');
+  assert.equal(first.button.getAttribute('aria-expanded'), 'true');
+  assert.equal(second.content.hidden, true);
+
+  first.click();
+  assert.equal(first.content.hidden, true);
+  assert.equal(first.root.classList.contains('is-collapsed'), true);
 });
