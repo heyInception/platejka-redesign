@@ -1,15 +1,19 @@
 import { gsap } from 'gsap';
 
 const {
+  buildTelegramUrl,
+  buildTransferMessage,
   calculateTransfer,
   formatMoney,
   formatRate,
+  parseAmount,
 } = require('./hero-calculator.cjs');
 const { getHeroImageOffset } = require('./hero-motion.cjs');
 
 const currencySymbols = {
   CNY: '¥',
   USD: '$',
+  EUR: '€',
 };
 
 function parseRates(root) {
@@ -83,6 +87,8 @@ function openContactDialog(dialog, summary, opener) {
 
   const summaryElement = dialog.querySelector('[data-dialog-summary]');
   if (summaryElement) summaryElement.textContent = summary || 'Расчёт не выбран.';
+  const cf7Summary = dialog.querySelector('[data-cf7-summary]');
+  if (cf7Summary) cf7Summary.value = summary || '';
   dialog.dialogOpener = opener || document.activeElement;
   dialog.showModal();
 }
@@ -109,6 +115,11 @@ function initHeroCalculator(root, dialog) {
   const buttons = [...root.querySelectorAll('[data-currency]')];
   const input = root.querySelector('[data-role="amount"]');
   const symbol = root.querySelector('[data-role="currency-symbol"]');
+  const countryFrom = root.querySelector('[data-role="country-from"]');
+  const countryTo = root.querySelector('[data-role="country-to"]');
+  const countryFlag = root.querySelector('[data-role="country-flag"]');
+  const telegramButton = root.querySelector('[data-action="telegram"]');
+  const isTransfer = root.hasAttribute('data-transfer-calculator');
   let currency = buttons.find((button) => button.classList.contains('is-active'))?.dataset.currency;
   let currentResult = null;
 
@@ -120,10 +131,10 @@ function initHeroCalculator(root, dialog) {
     if (symbol) symbol.textContent = currencySymbols[currency] || currency;
 
     if (currentResult) {
-      root.dispatchEvent(new CustomEvent('hero:calculated', {
+      root.dispatchEvent(new CustomEvent(isTransfer ? 'calculator:calculated' : 'hero:calculated', {
         bubbles: true,
         detail: {
-          amount: Number(input.value),
+          amount: parseAmount(input.value),
           currency,
           ...currentResult,
         },
@@ -148,17 +159,43 @@ function initHeroCalculator(root, dialog) {
     calculate();
   });
 
-  root.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const result = calculate();
+  countryTo?.addEventListener('change', () => {
+    if (!countryFlag) return;
+    const flag = countryTo.selectedOptions[0]?.dataset.flag;
+    countryFlag.hidden = !flag;
+    countryFlag.parentElement.classList.toggle('has-no-flag', !flag);
+    if (flag) countryFlag.src = flag;
+  });
 
+  const summary = (result) => {
+    if (!isTransfer) return buildSummary(parseAmount(input.value), currency, result);
+    return buildTransferMessage({
+      currency,
+      amount: parseAmount(input.value),
+      countryFrom: countryFrom?.selectedOptions[0]?.textContent?.trim() || 'Россия',
+      countryTo: countryTo?.selectedOptions[0]?.textContent?.trim() || '',
+      result,
+    });
+  };
+
+  const validResult = () => {
+    const result = calculate();
     if (!result) {
       input?.setAttribute('aria-invalid', 'true');
       input?.focus();
-      return;
     }
+    return result;
+  };
 
-    openContactDialog(dialog, buildSummary(Number(input.value), currency, result), event.submitter);
+  root.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const result = validResult();
+    if (result) openContactDialog(dialog, summary(result), event.submitter);
+  });
+
+  telegramButton?.addEventListener('click', () => {
+    const result = validResult();
+    if (result) window.open(buildTelegramUrl(summary(result)), '_blank', 'noopener');
   });
 
   const activeButton = buttons.find((button) => button.dataset.currency === currency);
@@ -288,11 +325,16 @@ function initHeroMotion(root) {
 }
 
 const hero = document.querySelector('[data-hero]');
-const dialog = document.querySelector('[data-contact-dialog]');
+const dialog = hero?.querySelector('[data-contact-dialog]');
+
+document.querySelectorAll('[data-hero-calculator], [data-transfer-calculator]').forEach((calculator) => {
+  const section = calculator.closest('[data-hero], [data-transfer-calculator-section]');
+  const localDialog = section?.querySelector('[data-contact-dialog]');
+  initContactDialog(localDialog);
+  initHeroCalculator(calculator, localDialog);
+});
 
 if (hero) {
-  initContactDialog(dialog);
-  initHeroCalculator(hero.querySelector('[data-hero-calculator]'), dialog);
   initHeroMotion(hero);
 
   document.querySelectorAll('[data-graph-path="call"]').forEach((button) => {

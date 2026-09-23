@@ -9,7 +9,7 @@ function roundMoney(value) {
 }
 
 function commissionFor(amount) {
-  const value = Number(amount);
+  const value = parseAmount(amount);
 
   if (!Number.isFinite(value) || value <= 0) {
     return 0;
@@ -18,8 +18,15 @@ function commissionFor(amount) {
   return value >= 3000 ? value * 0.005 : 275;
 }
 
+function parseAmount(value) {
+  if (typeof value === 'number') return value;
+  if (typeof value !== 'string') return NaN;
+  const normalized = value.replace(/[\s\u00a0\u202f]/g, '').replace(',', '.');
+  return /^\d+(?:\.\d+)?$/.test(normalized) ? Number(normalized) : NaN;
+}
+
 function calculateTransfer(amount, rate) {
-  const numericAmount = Number(amount);
+  const numericAmount = parseAmount(amount);
   const officialRate = Number(rate);
 
   if (
@@ -52,10 +59,27 @@ function formatRate(value) {
   return `${numberFormatter.format(Number(value) || 0)} ₽`;
 }
 
+function buildTransferMessage({ currency, amount, countryFrom, countryTo, result }) {
+  return [
+    `Валюта платежа: ${currency}`,
+    `Маршрут: ${countryFrom} → ${countryTo}`,
+    `Сумма: ${numberFormatter.format(parseAmount(amount))} ${currency}`,
+    `Комиссия агента: ${formatMoney(result.commission)}`,
+    `Итого в рублях: ${formatMoney(result.total)}`,
+  ].join('\n');
+}
+
+function buildTelegramUrl(message) {
+  return `https://t.me/platejka_com?text=${encodeURIComponent(message)}`;
+}
+
 module.exports = {
+  buildTelegramUrl,
+  buildTransferMessage,
   calculateTransfer,
   commissionFor,
   formatMoney,
   formatRate,
+  parseAmount,
   roundMoney,
 };

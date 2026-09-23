@@ -65,6 +65,18 @@ npm run dev
 
 Рекомендуемые ACF-поля: `hero_title_primary`, `hero_title_secondary`, `hero_description`, `hero_background`, `hero_blur`, `hero_currency_rates`, карточки преимуществ и подписи калькулятора. Структуру HTML и `data-*`-атрибуты при интеграции следует сохранить — JavaScript не зависит от конкретных текстов.
 
+### Калькулятор международного перевода
+
+- Переиспользуемая секция подключена в `src/china.html` и повторяет desktop- и mobile-макеты Penpot; вертикальная компоновка начинается с `@include tablet`.
+- Поддерживаются CNY, USD и EUR, форматированный ввод суммы, отправитель «Россия» и список стран получателя из WordPress-темы.
+- Hero и отдельная секция используют одну модель расчёта и один контроллер в `src/js/components/hero.js`; каждый экземпляр хранит собственное состояние.
+- Анимированный индикатор валютных вкладок учитывает `prefers-reduced-motion`.
+- Кнопка «Написать» открывает Telegram `platejka_com` с валютой, маршрутом и итогами расчёта.
+- Кнопка «Отправить заявку» открывает локальный `<dialog>`. Контейнер `[data-cf7-mount]` подготовлен для вывода Contact Form 7, а поле `[data-cf7-summary]` может получить текст расчёта при интеграции.
+- Значения в `data-currency-rates` демонстрационные. В WordPress атрибут должен формироваться сервером через `wp_json_encode()` и `esc_attr()`.
+
+Разметка находится в `src/partials/calculator.html`, стили — в `src/scss/components/_calculator.scss`, общая модель — в `src/js/components/hero-calculator.cjs`.
+
 ### About
 
 - Адаптивная секция о компании собрана по desktop- и mobile-макетам Figma.
@@ -167,6 +179,7 @@ npm run dev
 │   │   ├── documents.html
 │   │   ├── guarantees.html
 │   │   ├── hero.html
+│   │   ├── calculator.html
 │   │   └── preloader.html
 │   ├── resources/                   # Шрифты и прочие ресурсы
 │   ├── scss/
@@ -176,6 +189,7 @@ npm run dev
 │   │   │   ├── _guarantees.scss
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
+│   │   │   ├── _calculator.scss
 │   │   │   └── _preloader.scss
 │   │   ├── mixins/
 │   │   │   ├── _breakpoint.scss     # Адаптивные breakpoint-миксины
@@ -191,6 +205,7 @@ npm run dev
 │   ├── header.test.cjs
 │   ├── preloader.test.cjs
 │   ├── hero-calculator.test.cjs
+│   ├── calculator-section.test.cjs
 │   ├── hero-motion.test.cjs
 │   ├── hero.test.cjs
 │   ├── shipments-slider.test.cjs
@@ -225,6 +240,7 @@ npm run build
 - семантику, отсутствие ссылок, адаптивную сетку и GSAP-настройки секции Shipments;
 - расчёт ближайшей карточки мобильного слайдера Shipments;
 - ограничение координат параллакса Hero;
+- семантику, адаптивную компоновку, формулу, Telegram-ссылку и повторное использование секции калькулятора;
 - отсутствие вспышки логотипа до завершения прелоадера;
 - установку и срок действия cookie прелоадера;
 - варианты и доступные состояния UI-компонентов.

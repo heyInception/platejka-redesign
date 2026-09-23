@@ -141,8 +141,10 @@
     <div class="contact-dialog__content">
       <button class="btn-reset contact-dialog__close" type="button" data-dialog-close aria-label="Закрыть окно">×</button>
       <h2 class="contact-dialog__title" id="contact-dialog-title">Оставить заявку</h2>
-      <p class="contact-dialog__text">Мы сохранили параметры расчёта. Форма заявки появится здесь на следующем этапе.</p>
+      <p class="contact-dialog__text">Параметры расчёта готовы для заявки. Форма будет подключена при переносе в WordPress.</p>
       <p class="contact-dialog__summary" data-dialog-summary>Расчёт не выбран.</p>
+      <!-- При переносе в WordPress: вывести CF7 здесь; полю для сводки добавить data-cf7-summary. -->
+      <div data-cf7-mount></div>
     </div>
   </dialog>
 </section>
