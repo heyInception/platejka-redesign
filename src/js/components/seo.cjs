@@ -1,27 +1,95 @@
 'use strict';
 
-function initSeoSections(doc) {
-  let count = 0;
+const ANIMATION_DURATION = 450;
 
-  doc.querySelectorAll('[data-seo-section]').forEach((root) => {
-    const button = root.querySelector('[data-seo-toggle]');
-    const content = root.querySelector('[data-seo-content]');
-    if (!button || !content) return;
+function initSeoSection(root) {
+  const content = root.querySelector('[data-seo-content]');
+  const toggle = root.querySelector('[data-seo-toggle]');
+  if (!content || !toggle) return false;
 
-    const render = (collapsed) => {
-      content.hidden = collapsed;
-      root.classList.toggle('is-collapsed', collapsed);
-      button.setAttribute('aria-expanded', String(!collapsed));
-      button.textContent = collapsed ? 'Показать ещё' : 'Скрыть';
-    };
+  const children = [...content.children];
+  const heading = children[0];
+  const lead = children[1];
+  if (heading?.tagName !== 'H2' || lead?.tagName !== 'P' || children.length < 3) return false;
 
-    render(true);
-    button.hidden = false;
-    button.addEventListener('click', () => render(!content.hidden));
-    count += 1;
+  const collapsible = content.ownerDocument.createElement('div');
+  collapsible.dataset.seoCollapsible = '';
+  content.insertBefore(collapsible, children[2]);
+  children.slice(2).forEach((child) => collapsible.appendChild(child));
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const showLabel = toggle.dataset.seoShowLabel || 'Показать ещё';
+  const hideLabel = toggle.dataset.seoHideLabel || 'Скрыть';
+  let expanded = false;
+
+  Object.assign(collapsible.style, {
+    height: '0px',
+    overflow: 'hidden',
+    transition: reducedMotion.matches
+      ? 'none'
+      : `height ${ANIMATION_DURATION}ms cubic-bezier(0.22, 1, 0.36, 1)`,
+  });
+  collapsible.hidden = true;
+
+  const renderToggle = () => {
+    toggle.setAttribute('aria-expanded', String(expanded));
+    toggle.textContent = expanded ? hideLabel : showLabel;
+  };
+
+  const expand = () => {
+    expanded = true;
+    collapsible.hidden = false;
+    renderToggle();
+
+    if (reducedMotion.matches) {
+      collapsible.style.height = 'auto';
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      collapsible.style.height = `${collapsible.scrollHeight}px`;
+    });
+  };
+
+  const collapse = () => {
+    expanded = false;
+    renderToggle();
+
+    if (reducedMotion.matches) {
+      collapsible.style.height = '0px';
+      collapsible.hidden = true;
+      return;
+    }
+
+    collapsible.style.height = `${collapsible.scrollHeight}px`;
+    void collapsible.offsetHeight;
+    collapsible.style.height = '0px';
+  };
+
+  collapsible.addEventListener('transitionend', (event) => {
+    if (event.propertyName !== 'height') return;
+
+    if (expanded) {
+      collapsible.style.height = 'auto';
+    } else {
+      collapsible.hidden = true;
+    }
   });
 
-  return count;
+  toggle.addEventListener('click', () => {
+    if (expanded) collapse();
+    else expand();
+  });
+
+  renderToggle();
+  toggle.hidden = false;
+  return true;
 }
 
-module.exports = { initSeoSections };
+function initSeoSections(doc = document) {
+  return [...doc.querySelectorAll('[data-seo]')]
+    .filter((root) => initSeoSection(root))
+    .length;
+}
+
+module.exports = { initSeoSection, initSeoSections };

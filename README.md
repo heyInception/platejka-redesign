@@ -135,6 +135,16 @@ npm run dev
 
 Разметка — `src/partials/work.html` и `src/partials/problems.html`, стили — `src/scss/components/_work.scss` и `src/scss/components/_problems.scss`, поведение слайдера и окна — `src/js/components/problems.js`.
 
+### Раскрывающийся SEO-контент
+
+- Переиспользуемая секция подключается через корневой атрибут `data-seo`; на одной странице можно инициализировать несколько независимых экземпляров.
+- До раскрытия остаются видимыми первый `h2` и следующий за ним абзац. Остальной контент JavaScript помещает во внутренний контейнер и скрывает.
+- Кнопка плавно раскрывает и сворачивает контент, меняет подписи «Показать ещё» и «Скрыть» и синхронизирует `aria-expanded`.
+- При `prefers-reduced-motion: reduce` переход выполняется без анимации.
+- Без JavaScript весь текст остаётся доступен, а скрытая кнопка не отображается.
+
+Разметка находится в `src/partials/seo.html`, инициализация — в `src/js/components/seo.js`, логика компонента — в `src/js/components/seo.cjs`, стили — в `src/scss/components/_seo.scss`. Для сохранения поведения нужны атрибуты `data-seo`, `data-seo-content` и `data-seo-toggle`.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -165,7 +175,9 @@ npm run dev
 │   │   │   ├── hero-calculator.cjs   # Чистая модель расчёта
 │   │   │   ├── hero-motion.cjs       # Ограничение координат параллакса Hero
 │   │   │   ├── preloader.js         # GSAP-таймлайн прелоадера
-│   │   │   └── preloader-state.cjs  # Cookie-состояние прелоадера
+│   │   │   ├── preloader-state.cjs  # Cookie-состояние прелоадера
+│   │   │   ├── seo.js               # Инициализация раскрывающегося SEO-контента
+│   │   │   ├── seo.cjs              # Логика раскрытия SEO-контента
 │   │   │   ├── shipments.js         # ScrollTrigger-анимация и слайдер Shipments
 │   │   │   └── shipments-slider.cjs # Расчёт ближайшей карточки
 │   │   ├── _components.js           # Подключение компонентов
@@ -180,6 +192,7 @@ npm run dev
 │   │   ├── guarantees.html
 │   │   ├── hero.html
 │   │   ├── calculator.html
+│   │   ├── seo.html
 │   │   └── preloader.html
 │   ├── resources/                   # Шрифты и прочие ресурсы
 │   ├── scss/
@@ -190,6 +203,7 @@ npm run dev
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
 │   │   │   ├── _calculator.scss
+│   │   │   ├── _seo.scss
 │   │   │   └── _preloader.scss
 │   │   ├── mixins/
 │   │   │   ├── _breakpoint.scss     # Адаптивные breakpoint-миксины
@@ -210,6 +224,7 @@ npm run dev
 │   ├── hero.test.cjs
 │   ├── shipments-slider.test.cjs
 │   ├── shipments.test.cjs
+│   ├── seo-section.test.cjs
 │   └── ui-components.test.cjs
 ├── gulpfile.js
 ├── package.json

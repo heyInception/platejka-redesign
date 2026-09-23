@@ -3,84 +3,170 @@ const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const cheerio = require('cheerio');
-const sass = require('sass');
 const { initSeoSections } = require('../src/js/components/seo.cjs');
 
-const root = path.resolve(__dirname, '..');
-const $ = cheerio.load(fs.readFileSync(path.join(root, 'src/partials/seo.html'), 'utf8'));
+const projectRoot = path.resolve(__dirname, '..');
+const markup = fs.readFileSync(path.join(projectRoot, 'src/partials/seo.html'), 'utf8');
 
-test('SEO content is semantic and readable without JavaScript', () => {
-  const section = $('section[data-seo-section]');
+test('SEO section exposes only behavior hooks without hiding source content', () => {
+  const $ = cheerio.load(markup);
+  const section = $('section[data-seo]');
+  const content = section.find('[data-seo-content]');
+  const children = content.children();
 
   assert.equal(section.length, 1);
-  assert.equal(section.find('h2').first().text().trim(), 'Платежи в Китай');
+  assert.equal(content.length, 1);
+  assert.equal(children.first().prop('tagName'), 'H2');
+  assert.equal(children.eq(1).prop('tagName'), 'P');
+  assert.ok(children.length > 2);
+  assert.equal(content.is('[hidden]'), false);
   assert.equal(section.find('button[data-seo-toggle][hidden]').length, 1);
-  assert.equal(section.find('[data-seo-content]:not([hidden])').length, 1);
-  assert.equal(section.find('.seo__mobile-extra').length, 1);
-  assert.equal(section.find('.seo__card').length, 6);
-  assert.equal(section.find('[id]').length, 0);
-  assert.match(section.text(), /сейчас, в 2026 году\./);
-  assert.match(section.text(), /Почему прямые переводы в Китай не работают/);
-  assert.match(section.text(), /Контроль комплаенса/);
-  assert.equal(section.find('.seo__risk-list > li').length, 3);
 });
 
-function makeSeoFixture({ complete = true } = {}) {
-  const attributes = new Map();
-  const classes = new Set();
-  let clickListener;
-  const button = {
-    hidden: true,
-    textContent: '',
-    setAttribute: (name, value) => attributes.set(name, value),
-    getAttribute: (name) => attributes.get(name),
-    addEventListener: (name, listener) => {
-      if (name === 'click') clickListener = listener;
-    },
-  };
-  const content = { hidden: false };
-  const root = {
-    querySelector: (selector) => {
-      if (selector === '[data-seo-toggle]') return button;
-      return complete ? content : null;
-    },
-    classList: {
-      toggle: (name, enabled) => enabled ? classes.add(name) : classes.delete(name),
-      contains: (name) => classes.has(name),
-    },
-  };
+class FakeElement {
+  constructor(tagName, ownerDocument) {
+    this.tagName = tagName.toUpperCase();
+    this.ownerDocument = ownerDocument;
+    this.parentNode = null;
+    this.children = [];
+    this.dataset = {};
+    this.style = {};
+    this.hidden = false;
+    this.textContent = '';
+    this.scrollHeight = 320;
+    this.offsetHeight = 320;
+    this.attributes = new Map();
+    this.listeners = new Map();
+  }
 
-  return { root, button, content, click: () => clickListener() };
+  appendChild(child) {
+    child.parentNode?.removeChild(child);
+    child.parentNode = this;
+    this.children.push(child);
+    return child;
+  }
+
+  insertBefore(child, reference) {
+    child.parentNode?.removeChild(child);
+    const index = this.children.indexOf(reference);
+    child.parentNode = this;
+    this.children.splice(index, 0, child);
+    return child;
+  }
+
+  removeChild(child) {
+    const index = this.children.indexOf(child);
+    if (index !== -1) this.children.splice(index, 1);
+    child.parentNode = null;
+  }
+
+  setAttribute(name, value) {
+    this.attributes.set(name, value);
+  }
+
+  getAttribute(name) {
+    return this.attributes.get(name);
+  }
+
+  addEventListener(name, listener) {
+    this.listeners.set(name, listener);
+  }
+
+  dispatch(name, event = {}) {
+    this.listeners.get(name)?.(event);
+  }
 }
 
-test('reveal is accessible and scoped to each SEO section', () => {
-  const first = makeSeoFixture();
-  const second = makeSeoFixture();
-  const incomplete = makeSeoFixture({ complete: false });
-  const doc = { querySelectorAll: () => [first.root, second.root, incomplete.root] };
+function makeSeoFixture(doc) {
+  const content = new FakeElement('div', doc);
+  ['h2', 'p', 'p', 'h3', 'p'].forEach((tagName) => {
+    content.appendChild(new FakeElement(tagName, doc));
+  });
 
-  assert.equal(initSeoSections(doc), 2);
-  assert.equal(first.content.hidden, true);
-  assert.equal(first.button.hidden, false);
-  assert.equal(first.button.textContent, 'Показать ещё');
-  assert.equal(first.button.getAttribute('aria-expanded'), 'false');
+  const button = new FakeElement('button', doc);
+  button.hidden = true;
+  button.dataset.seoShowLabel = 'Показать ещё';
+  button.dataset.seoHideLabel = 'Скрыть';
 
-  first.click();
-  assert.equal(first.content.hidden, false);
-  assert.equal(first.button.textContent, 'Скрыть');
-  assert.equal(first.button.getAttribute('aria-expanded'), 'true');
-  assert.equal(second.content.hidden, true);
+  const root = {
+    querySelector(selector) {
+      if (selector === '[data-seo-content]') return content;
+      if (selector === '[data-seo-toggle]') return button;
+      return null;
+    },
+  };
 
-  first.click();
-  assert.equal(first.content.hidden, true);
-  assert.equal(first.root.classList.contains('is-collapsed'), true);
+  return { root, content, button };
+}
+
+test('SEO content expands and collapses independently with accessible state', () => {
+  const originalWindow = global.window;
+  const originalRequestAnimationFrame = global.requestAnimationFrame;
+
+  global.window = { matchMedia: () => ({ matches: false }) };
+  global.requestAnimationFrame = (callback) => callback();
+
+  try {
+    const doc = { createElement: (tagName) => new FakeElement(tagName, doc) };
+    const first = makeSeoFixture(doc);
+    const second = makeSeoFixture(doc);
+    doc.querySelectorAll = () => [first.root, second.root];
+
+    assert.equal(initSeoSections(doc), 2);
+    assert.equal(first.content.children.length, 3);
+
+    const collapsible = first.content.children[2];
+    assert.equal(collapsible.dataset.seoCollapsible, '');
+    assert.equal(collapsible.children.length, 3);
+    assert.equal(collapsible.hidden, true);
+    assert.equal(first.button.hidden, false);
+    assert.equal(first.button.textContent, 'Показать ещё');
+    assert.equal(first.button.getAttribute('aria-expanded'), 'false');
+
+    first.button.dispatch('click');
+    assert.equal(collapsible.hidden, false);
+    assert.equal(collapsible.style.height, '320px');
+    assert.equal(first.button.textContent, 'Скрыть');
+    assert.equal(first.button.getAttribute('aria-expanded'), 'true');
+    assert.equal(second.content.children[2].hidden, true);
+
+    collapsible.dispatch('transitionend', { propertyName: 'height' });
+    assert.equal(collapsible.style.height, 'auto');
+
+    first.button.dispatch('click');
+    assert.equal(collapsible.style.height, '0px');
+    assert.equal(collapsible.hidden, false);
+    assert.equal(first.button.textContent, 'Показать ещё');
+    assert.equal(first.button.getAttribute('aria-expanded'), 'false');
+
+    collapsible.dispatch('transitionend', { propertyName: 'height' });
+    assert.equal(collapsible.hidden, true);
+  } finally {
+    global.window = originalWindow;
+    global.requestAnimationFrame = originalRequestAnimationFrame;
+  }
 });
 
-test('SEO styles provide desktop cards and tablet stacking', () => {
-  const css = sass.compile(path.join(root, 'src/scss/main.scss')).css;
+test('SEO content switches instantly when reduced motion is requested', () => {
+  const originalWindow = global.window;
+  global.window = { matchMedia: () => ({ matches: true }) };
 
-  assert.match(css, /\.seo__cards\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
-  assert.match(css, /\.seo \[hidden\]\s*\{[^}]*display:\s*none/);
-  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*?\.seo__cards\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
-  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*?\.seo\.is-collapsed \.seo__mobile-extra\s*\{[^}]*display:\s*none/);
+  try {
+    const doc = { createElement: (tagName) => new FakeElement(tagName, doc) };
+    const fixture = makeSeoFixture(doc);
+    doc.querySelectorAll = () => [fixture.root];
+
+    initSeoSections(doc);
+    const collapsible = fixture.content.children[2];
+
+    fixture.button.dispatch('click');
+    assert.equal(collapsible.hidden, false);
+    assert.equal(collapsible.style.height, 'auto');
+
+    fixture.button.dispatch('click');
+    assert.equal(collapsible.hidden, true);
+    assert.equal(collapsible.style.height, '0px');
+  } finally {
+    global.window = originalWindow;
+  }
 });
