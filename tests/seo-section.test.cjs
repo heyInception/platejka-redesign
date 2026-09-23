@@ -3,6 +3,7 @@ const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const cheerio = require('cheerio');
+const sass = require('sass');
 const { initSeoSections } = require('../src/js/components/seo.cjs');
 
 const root = path.resolve(__dirname, '..');
@@ -72,4 +73,13 @@ test('reveal is accessible and scoped to each SEO section', () => {
   first.click();
   assert.equal(first.content.hidden, true);
   assert.equal(first.root.classList.contains('is-collapsed'), true);
+});
+
+test('SEO styles provide desktop cards and tablet stacking', () => {
+  const css = sass.compile(path.join(root, 'src/scss/main.scss')).css;
+
+  assert.match(css, /\.seo__cards\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(css, /\.seo \[hidden\]\s*\{[^}]*display:\s*none/);
+  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*?\.seo__cards\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*?\.seo\.is-collapsed \.seo__mobile-extra\s*\{[^}]*display:\s*none/);
 });
