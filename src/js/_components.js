@@ -8,3 +8,4 @@ import './components/documents';
 import './components/review';
 import './components/problems';
 import './components/seo';
+import './components/faq';

@@ -145,6 +145,16 @@ npm run dev
 
 Разметка находится в `src/partials/seo.html`, инициализация — в `src/js/components/seo.js`, логика компонента — в `src/js/components/seo.cjs`, стили — в `src/scss/components/_seo.scss`. Для сохранения поведения нужны атрибуты `data-seo`, `data-seo-content` и `data-seo-toggle`.
 
+### FAQ
+
+- Переиспользуемая секция подключена в `src/china.html` и повторяет desktop- и mobile-макеты Penpot; вертикальная компоновка начинается с `@include tablet`.
+- Семь пунктов оформлены доступными кнопками с `aria-expanded` и `aria-controls`. Второй пункт раскрыт при загрузке, одновременно может быть открыт только один ответ, повторный клик закрывает его.
+- Раскрытие панели и поворот иконки анимируются через GSAP. При `prefers-reduced-motion: reduce` состояние меняется без анимации.
+- Кнопка «Задать свой вопрос» открывает существующую контактную модалку Hero.
+- Каждый экземпляр `[data-faq]` инициализируется независимо, поэтому компонент можно повторно использовать на других страницах.
+
+Разметка находится в `src/partials/faq.html`, инициализация — в `src/js/components/faq.js`, логика аккордеона — в `src/js/components/faq.cjs`, стили — в `src/scss/components/_faq.scss`.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -174,6 +184,8 @@ npm run dev
 │   │   │   ├── hero.js              # Калькулятор, диалог и GSAP-анимация Hero
 │   │   │   ├── hero-calculator.cjs   # Чистая модель расчёта
 │   │   │   ├── hero-motion.cjs       # Ограничение координат параллакса Hero
+│   │   │   ├── faq.js                # Инициализация FAQ и GSAP-анимация
+│   │   │   ├── faq.cjs               # Логика доступного аккордеона FAQ
 │   │   │   ├── preloader.js         # GSAP-таймлайн прелоадера
 │   │   │   ├── preloader-state.cjs  # Cookie-состояние прелоадера
 │   │   │   ├── seo.js               # Инициализация раскрывающегося SEO-контента
@@ -192,6 +204,7 @@ npm run dev
 │   │   ├── guarantees.html
 │   │   ├── hero.html
 │   │   ├── calculator.html
+│   │   ├── faq.html
 │   │   ├── seo.html
 │   │   └── preloader.html
 │   ├── resources/                   # Шрифты и прочие ресурсы
@@ -203,6 +216,7 @@ npm run dev
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
 │   │   │   ├── _calculator.scss
+│   │   │   ├── _faq.scss
 │   │   │   ├── _seo.scss
 │   │   │   └── _preloader.scss
 │   │   ├── mixins/
@@ -220,6 +234,7 @@ npm run dev
 │   ├── preloader.test.cjs
 │   ├── hero-calculator.test.cjs
 │   ├── calculator-section.test.cjs
+│   ├── faq-section.test.cjs
 │   ├── hero-motion.test.cjs
 │   ├── hero.test.cjs
 │   ├── shipments-slider.test.cjs
@@ -256,6 +271,7 @@ npm run build
 - расчёт ближайшей карточки мобильного слайдера Shipments;
 - ограничение координат параллакса Hero;
 - семантику, адаптивную компоновку, формулу, Telegram-ссылку и повторное использование секции калькулятора;
+- семантику, доступность, начальное состояние и переключение пунктов FAQ;
 - отсутствие вспышки логотипа до завершения прелоадера;
 - установку и срок действия cookie прелоадера;
 - варианты и доступные состояния UI-компонентов.
