@@ -155,6 +155,17 @@ npm run dev
 
 Разметка находится в `src/partials/faq.html`, инициализация — в `src/js/components/faq.js`, логика аккордеона — в `src/js/components/faq.cjs`, стили — в `src/scss/components/_faq.scss`.
 
+### Call
+
+- Переиспользуемая секция обратной связи подключена в `src/china.html` и повторяет desktop- и mobile-макеты Penpot. Вертикальная мобильная компоновка начинается с `@include tablet`.
+- Форма содержит телефон, email, сообщение и обязательное согласие с политикой конфиденциальности. До подключения backend отправка отменяется без перехода страницы.
+- Глобальная маска применяется ко всем полям `input.js-phone-mask` и использует формат `+7 (999) 999-99-99`. Повторная инициализация одного поля исключена.
+- Заголовок, карточки преимуществ и форма один раз появляются при входе секции в область просмотра через GSAP ScrollTrigger.
+- `gsap.matchMedia()` отслеживает `prefers-reduced-motion`: при включённом сокращении движения контент показывается без анимации.
+- Каждый экземпляр `[data-call]` инициализируется независимо, поэтому partial можно подключать на других страницах без привязки к текстовому содержимому.
+
+Разметка находится в `src/partials/call.html`, стили — в `src/scss/components/_call.scss`, инициализация — в `src/js/components/call.js`, тестируемая логика анимации и формы — в `src/js/components/call-motion.cjs`, глобальная маска — в `src/js/components/phone-mask.js` и `src/js/components/phone-mask.cjs`.
+
 ### UI-kit
 
 В глобальных стилях доступны базовые компоненты и состояния:
@@ -178,6 +189,8 @@ npm run dev
 │   ├── js/
 │   │   ├── components/
 │   │   │   ├── about.js             # Диалог секции About
+│   │   │   ├── call.js              # Инициализация Call, формы и ScrollTrigger
+│   │   │   ├── call-motion.cjs       # Тестируемая логика Call
 │   │   │   ├── documents.js         # Мобильный слайдер документов
 │   │   │   ├── guarantees.js        # Мобильный слайдер секции Гарантии
 │   │   │   ├── header.js            # Навигация и анимация логотипа
@@ -188,6 +201,8 @@ npm run dev
 │   │   │   ├── faq.cjs               # Логика доступного аккордеона FAQ
 │   │   │   ├── preloader.js         # GSAP-таймлайн прелоадера
 │   │   │   ├── preloader-state.cjs  # Cookie-состояние прелоадера
+│   │   │   ├── phone-mask.js         # Глобальная инициализация телефонной маски
+│   │   │   ├── phone-mask.cjs        # Конфигурация и логика маски
 │   │   │   ├── seo.js               # Инициализация раскрывающегося SEO-контента
 │   │   │   ├── seo.cjs              # Логика раскрытия SEO-контента
 │   │   │   ├── shipments.js         # ScrollTrigger-анимация и слайдер Shipments
@@ -204,6 +219,7 @@ npm run dev
 │   │   ├── guarantees.html
 │   │   ├── hero.html
 │   │   ├── calculator.html
+│   │   ├── call.html
 │   │   ├── faq.html
 │   │   ├── seo.html
 │   │   └── preloader.html
@@ -216,6 +232,7 @@ npm run dev
 │   │   │   ├── _header.scss
 │   │   │   ├── _hero.scss
 │   │   │   ├── _calculator.scss
+│   │   │   ├── _call.scss
 │   │   │   ├── _faq.scss
 │   │   │   ├── _seo.scss
 │   │   │   └── _preloader.scss
@@ -234,11 +251,13 @@ npm run dev
 │   ├── preloader.test.cjs
 │   ├── hero-calculator.test.cjs
 │   ├── calculator-section.test.cjs
+│   ├── call-section.test.cjs
 │   ├── faq-section.test.cjs
 │   ├── hero-motion.test.cjs
 │   ├── hero.test.cjs
 │   ├── shipments-slider.test.cjs
 │   ├── shipments.test.cjs
+│   ├── phone-mask.test.cjs
 │   ├── seo-section.test.cjs
 │   └── ui-components.test.cjs
 ├── gulpfile.js
@@ -272,6 +291,8 @@ npm run build
 - ограничение координат параллакса Hero;
 - семантику, адаптивную компоновку, формулу, Telegram-ссылку и повторное использование секции калькулятора;
 - семантику, доступность, начальное состояние и переключение пунктов FAQ;
+- семантику, адаптивную компоновку, ScrollTrigger-анимацию и отмену placeholder-отправки секции Call;
+- глобальную телефонную маску для всех полей `.js-phone-mask`;
 - отсутствие вспышки логотипа до завершения прелоадера;
 - установку и срок действия cookie прелоадера;
 - варианты и доступные состояния UI-компонентов.

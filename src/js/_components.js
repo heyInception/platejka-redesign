@@ -9,3 +9,4 @@ import './components/review';
 import './components/problems';
 import './components/seo';
 import './components/faq';
+import './components/call';

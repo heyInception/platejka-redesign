@@ -1,0 +1,235 @@
+.call {
+  padding: 112px 0;
+
+  p {
+    margin: 0;
+  }
+
+  &__panel {
+    overflow: hidden;
+    border-radius: 40px;
+    padding: 48px;
+    color: var(--text-overlay-primary);
+    background:
+      linear-gradient(90deg, rgb(0 20 10 / 86%), rgb(0 30 14 / 28%)),
+      url("../img/call-bg.jpg") center / cover no-repeat;
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 691px) minmax(0, 1fr);
+    gap: 60px;
+  }
+
+  &__column {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 64px;
+  }
+
+  &__title {
+    max-width: 660px;
+    font: 700 48px / 52px var(--font-family);
+    letter-spacing: -0.04em;
+  }
+
+  &__trust {
+    gap: 12px;
+
+    .hero__trust-card {
+      min-height: 112px;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .hero__trust-years {
+      gap: 6px;
+      font: 700 28px / 32px var(--font-family);
+
+      img {
+        width: 16px;
+        height: 52px;
+      }
+    }
+
+    .hero__trust-caption,
+    .hero__trust-title {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .hero__trust-card_registry,
+    .hero__trust-card_association {
+      justify-content: flex-start;
+    }
+
+    .hero__trust-decor {
+      right: -22px;
+      bottom: -48px;
+      width: 108px;
+      height: 108px;
+    }
+  }
+
+  &__form {
+    align-self: center;
+    border-radius: 24px;
+    padding: 32px;
+    min-width: 0;
+    color: var(--text-primary);
+    background: var(--surface-primary);
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ui-input {
+      max-width: none;
+    }
+  }
+
+  &__message {
+    min-height: 60px;
+    resize: none;
+  }
+
+  &__submit {
+    width: 100%;
+  }
+
+  &__consent {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+
+    .custom-checkbox__field {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .custom-checkbox__content {
+      padding-left: 24px;
+      font: 500 12px / 16px var(--font-family);
+      letter-spacing: -0.02em;
+      color: var(--text-secondary);
+
+      &::before,
+      &::after {
+        top: 1px;
+        border-radius: 4px;
+        width: 16px;
+        height: 16px;
+      }
+
+      &::before {
+        border-color: var(--border-primary);
+      }
+
+      &::after {
+        background-color: var(--surface-brand);
+        filter: invert(1);
+      }
+    }
+
+    .ui-link {
+      display: inline;
+      font: inherit;
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+      color: inherit;
+    }
+  }
+
+}
+
+@include tablet {
+  .call {
+    padding: 64px 0;
+
+    .container {
+      padding: 0 8px;
+    }
+
+    &__panel {
+      border-radius: 0;
+      padding: 24px 8px;
+    }
+
+    &__layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    &__column {
+      gap: 24px;
+    }
+
+    &__title {
+      max-width: 335px;
+      font-size: 30px;
+      line-height: 32px;
+    }
+
+    &__trust {
+      gap: 4px;
+
+      .hero__trust-card {
+        min-height: 132px;
+        border-radius: 12px;
+        padding: 8px;
+      }
+
+      .hero__trust-card_registry,
+      .hero__trust-card_association {
+        justify-content: flex-end;
+      }
+
+      .hero__trust-years {
+        font-size: 22px;
+        line-height: 24px;
+      }
+
+      .hero__trust-decor {
+        top: 8px;
+        right: 50%;
+        bottom: auto;
+        width: 60px;
+        height: 60px;
+        transform: translateX(50%);
+      }
+    }
+
+    &__form {
+      border-radius: 16px;
+      padding: 16px;
+
+      form {
+        gap: 16px;
+      }
+    }
+
+    &__form .ui-input,
+    &__submit {
+      min-height: 60px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    &__message {
+      height: 60px;
+      min-height: 60px;
+    }
+
+    &__consent .custom-checkbox__content {
+      font-size: 10px;
+      line-height: 14px;
+    }
+  }
+}
