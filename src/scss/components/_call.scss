@@ -37,7 +37,7 @@
 
   &__trust {
     gap: 12px;
-
+    color: var(--surface-inverse);
     .hero__trust-card {
       min-height: 112px;
       border-radius: 16px;
@@ -105,47 +105,99 @@
     position: relative;
     display: flex;
     align-items: flex-start;
+    cursor: pointer; // Курсор-рука для всей области
 
+    // Скрываем нативный чекбокс
     .custom-checkbox__field {
       position: absolute;
-      width: 1px;
-      height: 1px;
       opacity: 0;
+      width: 0;
+      height: 0;
+      margin: 0;
+      pointer-events: none;
     }
 
     .custom-checkbox__content {
-      padding-left: 24px;
+      position: relative;
+      padding-left: 28px; // Отступ для текста (20px чекбокс + 8px отступ)
       font: 500 12px / 16px var(--font-family);
       letter-spacing: -0.02em;
       color: var(--text-secondary);
+      user-select: none; // Чтобы текст не выделялся при клике
 
-      &::before,
-      &::after {
-        top: 1px;
-        border-radius: 4px;
-        width: 16px;
-        height: 16px;
-      }
-
+      // Отрисовка квадратика чекбокса
       &::before {
-        border-color: var(--border-primary);
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--border-primary);
+        border-radius: 6px;
+        background-color: transparent;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
       }
 
+      // Отрисовка галочки (по умолчанию скрыта)
       &::after {
-        background-color: var(--surface-brand);
-        filter: invert(1);
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        // Рисуем галочку через SVG (белую)
+        background-image: url("data:image/svg+xml,%3Csvg width='11' height='9' viewBox='0 0 11 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.5765 0.219678C11.0555 0.572413 11.1409 1.22496 10.7673 1.67719L5.04734 8.60023C4.8432 8.84731 4.53179 8.99415 4.19992 8.99983C3.86806 9.00551 3.55122 8.86941 3.33773 8.62947L0.257748 5.16795C-0.132996 4.7288 -0.0726616 4.07376 0.392511 3.70487C0.857684 3.33599 1.55154 3.39295 1.94229 3.8321L4.14833 6.31141L9.03261 0.39982C9.40625 -0.0524053 10.0975 -0.133057 10.5765 0.219678Z' fill='%23007336' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0; // Скрываем по умолчанию
+        transform: scale(0.8); // Эффект нажатия
+        transition: all 0.2s ease;
+        box-sizing: border-box;
       }
     }
 
+    // Стили для ссылок внутри текста
     .ui-link {
       display: inline;
       font: inherit;
       text-decoration: underline;
       text-decoration-skip-ink: none;
       color: inherit;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+
+    // --- СОСТОЯНИЯ ---
+
+    // При наведении на label
+    &:hover .custom-checkbox__content::before {
+      border-color: var(--text-primary); // Или ваш цвет акцента
+    }
+
+    // Когда чекбокс выбран (:checked)
+    .custom-checkbox__field:checked + .custom-checkbox__content {
+      &::before {
+        border-color: var(--surface-brand);
+      }
+      &::after {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    // Фокус для доступности (Tab)
+    .custom-checkbox__field:focus-visible + .custom-checkbox__content::before {
+      outline: 2px solid var(--surface-brand);
+      outline-offset: 2px;
     }
   }
-
 }
 
 @include tablet {
