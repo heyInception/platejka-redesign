@@ -22,6 +22,7 @@ test('SEO content is semantic and readable without JavaScript', () => {
   assert.match(section.text(), /сейчас, в 2026 году\./);
   assert.match(section.text(), /Почему прямые переводы в Китай не работают/);
   assert.match(section.text(), /Контроль комплаенса/);
+  assert.equal(section.find('.seo__risk-list > li').length, 3);
 });
 
 function makeSeoFixture({ complete = true } = {}) {
