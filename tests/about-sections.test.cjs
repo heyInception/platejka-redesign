@@ -65,6 +65,9 @@ test('about call keeps the form and adds two lower contact cards', () => {
   const $ = partial('call-about');
   assert.equal($('.call__form form').length, 1);
   assert.equal($('.call-about__card').length, 2);
+  assert.equal($('.call-about__card').first().find('img[src*="call-about/"]').length, 2);
+  assert.equal($('.call-about__card').last().find('img[src*="call-about/"]').length, 5);
+  assert.equal($('img[src*="call-about/whatsapp.svg"]').length, 1);
   assert.match($.text(), /Свяжитесь с нами/);
   assert.match($.text(), /Читайте нас в соцсетях/);
 });
