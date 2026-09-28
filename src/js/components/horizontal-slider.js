@@ -5,6 +5,7 @@ const {
   getTargetOffset,
   getReachableIndex,
   shouldShowControls,
+  isIndexedControlActive,
   isInteractiveTarget,
 } = require('./horizontal-slider.cjs');
 
@@ -17,11 +18,13 @@ function initHorizontalSlider(root) {
   const previous = root.querySelector('[data-horizontal-slider-prev]');
   const next = root.querySelector('[data-horizontal-slider-next]');
   const controls = root.querySelector('[data-horizontal-slider-controls]');
+  const indexedControls = [...root.querySelectorAll('[data-horizontal-slider-go-to]')];
   if (!viewport || !track || !slides.length) return null;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = window.matchMedia('(min-width: 1025px)');
   const minimumControls = Number.parseInt(root.dataset.horizontalSliderMinControls || '0', 10);
+  const desktopControlsOnly = root.hasAttribute('data-horizontal-slider-desktop-controls');
   let currentIndex = 0;
   let currentOffset = 0;
   let offsets = [];
@@ -30,9 +33,19 @@ function initHorizontalSlider(root) {
 
   const syncControls = () => {
     const maximum = Math.max(0, track.scrollWidth - viewport.clientWidth);
-    if (controls) controls.hidden = !shouldShowControls(slides.length, minimumControls, desktop.matches);
+    if (controls) controls.hidden = !shouldShowControls(
+      slides.length,
+      minimumControls,
+      desktop.matches,
+      desktopControlsOnly,
+    );
     if (previous) previous.disabled = currentOffset <= 0;
     if (next) next.disabled = currentOffset >= maximum;
+    indexedControls.forEach((control) => {
+      const active = isIndexedControlActive(control.dataset.horizontalSliderGoTo, currentIndex, slides.length);
+      control.setAttribute('aria-current', active ? 'true' : 'false');
+      control.classList.toggle('is-active', active);
+    });
   };
 
   const measure = () => {
@@ -51,6 +64,7 @@ function initHorizontalSlider(root) {
       overwrite: 'auto',
     });
     syncControls();
+    root.dispatchEvent(new CustomEvent('horizontal-slider:change', { detail: { index: currentIndex } }));
     return currentIndex;
   };
 
@@ -61,6 +75,9 @@ function initHorizontalSlider(root) {
 
   previous?.addEventListener('click', () => goTo(currentIndex - 1));
   next?.addEventListener('click', () => goTo(currentIndex + 1));
+  indexedControls.forEach((control) => {
+    control.addEventListener('click', () => goTo(Number(control.dataset.horizontalSliderGoTo)));
+  });
   viewport.addEventListener('keydown', (event) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();

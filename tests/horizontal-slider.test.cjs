@@ -5,6 +5,7 @@ const {
   getTargetOffset,
   getReachableIndex,
   shouldShowControls,
+  isIndexedControlActive,
   isInteractiveTarget,
 } = require('../src/js/components/horizontal-slider.cjs');
 
@@ -33,6 +34,23 @@ test('uses desktop card-count thresholds without hiding mobile controls', () => 
   assert.equal(shouldShowControls(3, 4, true), false);
   assert.equal(shouldShowControls(4, 4, true), true);
   assert.equal(shouldShowControls(3, 4, false), true);
+});
+
+test('desktop-only controls stay hidden on mobile and honor exact thresholds', () => {
+  assert.equal(shouldShowControls(3, 4, true, true), false);
+  assert.equal(shouldShowControls(4, 4, true, true), true);
+  assert.equal(shouldShowControls(6, 7, true, true), false);
+  assert.equal(shouldShowControls(7, 7, true, true), true);
+  assert.equal(shouldShowControls(7, 7, false, true), false);
+  assert.equal(shouldShowControls(3, 4, false), true);
+});
+
+test('indexed controls expose only the reachable active slide', () => {
+  assert.equal(isIndexedControlActive('0', 0, 7), true);
+  assert.equal(isIndexedControlActive('4', 4, 7), true);
+  assert.equal(isIndexedControlActive('6', 5, 7), false);
+  assert.equal(isIndexedControlActive('12', 6, 7), false);
+  assert.equal(isIndexedControlActive('year', 0, 7), false);
 });
 
 test('does not start a drag gesture from an interactive card control', () => {

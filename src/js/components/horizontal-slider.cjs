@@ -23,9 +23,15 @@ function getReachableIndex(offsets, index, viewportWidth, trackWidth) {
   return edgeIndex < 0 ? requested : edgeIndex;
 }
 
-function shouldShowControls(slideCount, minimum, isDesktop) {
+function shouldShowControls(slideCount, minimum, isDesktop, desktopOnly = false) {
   const threshold = Number.isFinite(minimum) ? minimum : 0;
+  if (desktopOnly && !isDesktop) return false;
   return !isDesktop || threshold < 1 || slideCount >= threshold;
+}
+
+function isIndexedControlActive(value, currentIndex, slideCount) {
+  const index = Number(value);
+  return Number.isInteger(index) && index >= 0 && index < slideCount && index === currentIndex;
 }
 
 function isInteractiveTarget(target) {
@@ -37,5 +43,6 @@ module.exports = {
   getTargetOffset,
   getReachableIndex,
   shouldShowControls,
+  isIndexedControlActive,
   isInteractiveTarget,
 };
