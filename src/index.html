@@ -8,9 +8,26 @@
   <div class="site-container">
     @include('partials/header.html')
     <main class="main">
-      @include('partials/shipments.html')
+      @include('partials/hero-main.html')
+      @include('partials/about.html')
+      @include('partials/shipments.html', {"mode": "main"})
+      @include('partials/guarantees.html', {"mode": "main"})
+      @include('partials/documents.html', {"mode": "main"})
+      @include('partials/compliance.html')
+      @include('partials/review-main.html')
+      @include('partials/work.html')
+      @include('partials/calculator.html')
+      @include('partials/with-us.html')
+      @include('partials/destinations.html')
+      @include('partials/seo.html')
+      @include('partials/problems.html')
+      @include('partials/serves.html')
+      @include('partials/cases.html')
+      @include('partials/table.html')
+      @include('partials/faq.html')
+      @include('partials/call.html')
     </main>
-
+    @include('partials/footer.html')
   </div>
 </body>
 

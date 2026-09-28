@@ -7,14 +7,15 @@ const sass = require('sass');
 const root = path.resolve(__dirname, '..');
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'utf8');
 
-test('shipments partial exposes a semantic six-card section without links', () => {
+test('default shipments branch exposes a semantic six-card section without links', () => {
   const html = read('src/partials/shipments.html');
+  const defaultBranch = html.match(/@if \(mode !== 'main'\) \{([\s\S]*)\}\s*$/)?.[1] || html;
 
-  assert.match(html, /<section[^>]+data-shipments/);
-  assert.match(html, /<h2\b[^>]*>От обычного инвойса до сложных поставок<\/h2>/);
-  assert.equal((html.match(/<article\b/g) || []).length, 6);
-  assert.equal((html.match(/data-shipments-image/g) || []).length, 6);
-  assert.doesNotMatch(html, /<a\b|<button\b/);
+  assert.match(defaultBranch, /<section[^>]+data-shipments/);
+  assert.match(defaultBranch, /<h2\b[^>]*>От обычного инвойса до сложных поставок<\/h2>/);
+  assert.equal((defaultBranch.match(/<article\b/g) || []).length, 6);
+  assert.equal((defaultBranch.match(/data-shipments-image/g) || []).length, 6);
+  assert.doesNotMatch(defaultBranch, /<a\b|<button\b/);
 });
 
 test('shipments is included in the page and initialized as a component', () => {
@@ -22,7 +23,7 @@ test('shipments is included in the page and initialized as a component', () => {
   const imports = read('src/js/_components.js');
   const js = read('src/js/components/shipments.js');
 
-  assert.match(page, /@include\(['"]partials\/shipments\.html['"]\)/);
+  assert.match(page, /@include\(['"]partials\/shipments\.html['"][^\n]*\)/);
   assert.match(imports, /import ['"]\.\/components\/shipments['"]/);
   assert.match(js, /ScrollTrigger/);
   assert.match(js, /once:\s*true/);

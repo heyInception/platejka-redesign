@@ -10,9 +10,9 @@
     <main class="main">
       @include('partials/hero.html')
       @include('partials/about.html')
-      @include('partials/shipments.html')
-      @include('partials/guarantees.html')
-      @include('partials/documents.html')
+      @include('partials/shipments.html', {"mode": "default"})
+      @include('partials/guarantees.html', {"mode": "default"})
+      @include('partials/documents.html', {"mode": "default"})
       @include('partials/protection.html')
       @include('partials/review.html')
       @include('partials/work.html')

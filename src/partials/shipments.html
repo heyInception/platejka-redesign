@@ -1,4 +1,42 @@
-<section class="shipments" data-shipments aria-labelledby="shipments-title">
+@if (mode === 'main') {
+<section class="shipments shipments--main" data-shipments aria-labelledby="shipments-main-title">
+  <div class="container">
+    <header class="shipments__header">
+      <h2 id="shipments-main-title" class="shipments__title">Предоставьте платежи за рубеж нам и фокусируйтесь на своём бизнесе</h2>
+      <p class="shipments__description">Мы предлагаем надёжные и проверенные решения для вашего бизнеса, чтобы вы могли продолжать работать и развиваться даже в сложных условиях. Наша компания специализируется на международных платежах для юридических лиц, обеспечивая безопасность и соответствие всем законодательным требованиям.</p>
+    </header>
+    <div class="shipments__list" data-shipments-slider tabindex="0" role="region" aria-label="Направления международных платежей">
+      <article class="shipment-card shipment-card--main shipment-card_warm">
+        <div class="shipment-card__content"><h3 class="shipment-card__title">Платежи в Китай</h3><p class="shipment-card__text">Расчёты с китайским поставщиком за 1–2 дня</p></div>
+        <div class="shipment-card__tags" aria-label="Возможности"><span>Оплата поставщику</span><span>Импорт из Китая</span><span>Инвойс в CNY</span></div>
+        <a class="shipment-card__link" href="#">Подробнее</a><img class="shipment-card__image" data-shipments-image src="../img/shipments/main-1.png" width="300" height="300" alt="">
+      </article>
+      <article class="shipment-card shipment-card--main shipment-card_lime">
+        <div class="shipment-card__content"><h3 class="shipment-card__title">SWIFT переводы для бизнеса</h3><p class="shipment-card__text">Быстрые переводы в евро по всему миру</p></div>
+        <div class="shipment-card__tags" aria-label="Возможности"><span>Оплата за рубеж</span><span>Перевод в EUR</span><span>Зарубежные контрагенты</span></div>
+        <a class="shipment-card__link" href="#">Подробнее</a><img class="shipment-card__image" data-shipments-image src="../img/shipments/main-2.png" width="300" height="300" alt="">
+      </article>
+      <article class="shipment-card shipment-card--main shipment-card_light">
+        <div class="shipment-card__content"><h3 class="shipment-card__title">Валютный контроль</h3><p class="shipment-card__text">Сопровождение контрактов и взаимодействие с банком</p></div>
+        <div class="shipment-card__tags" aria-label="Возможности"><span>Постановка контракта</span><span>Документы для банка</span><span>Сопровождение ВЭД</span></div>
+        <a class="shipment-card__link" href="#">Подробнее</a><img class="shipment-card__image" data-shipments-image src="../img/shipments/main-3.png" width="300" height="300" alt="">
+      </article>
+      <article class="shipment-card shipment-card--main shipment-card_dark">
+        <div class="shipment-card__content"><h3 class="shipment-card__title">Международные переводы для юридических лиц</h3><p class="shipment-card__text">Проведём платежи через компании в Гонконге, Китае, Казахстане, Европе и США в любой валюте</p></div>
+        <div class="shipment-card__tags" aria-label="Возможности"><span>Оплата инвойсов</span><span>В любой валюте</span><span>Сложные направления</span></div>
+        <a class="shipment-card__link" href="#">Подробнее</a><img class="shipment-card__image" data-shipments-image src="../img/shipments/main-4.png" width="300" height="300" alt="">
+      </article>
+      <article class="shipment-card shipment-card--main shipment-card_blue">
+        <div class="shipment-card__content"><h3 class="shipment-card__title">Трансграничные платежи и переводы для юридических лиц</h3><p class="shipment-card__text">Поддерживаем трансграничные переводы в более чем 100 стран мира</p></div>
+        <div class="shipment-card__tags" aria-label="Возможности"><span>Расчёты с партнёрами</span><span>Платежи в 100+ стран</span><span>Международный бизнес</span></div>
+        <a class="shipment-card__link" href="#">Подробнее</a><img class="shipment-card__image" data-shipments-image src="../img/shipments/main-5.png" width="300" height="300" alt="">
+      </article>
+    </div>
+  </div>
+</section>
+}
+@if (mode !== 'main') {
+<section class="shipments shipments--default" data-shipments aria-labelledby="shipments-title">
   <div class="container">
     <header class="shipments__header">
       <h2 id="shipments-title" class="shipments__title">От обычного инвойса до сложных поставок</h2>
@@ -77,3 +115,4 @@
     </div>
   </div>
 </section>
+}

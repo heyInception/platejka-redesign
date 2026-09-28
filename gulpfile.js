@@ -243,7 +243,8 @@ const htmlInclude = () => {
 return src([`${srcFolder}/**/*.html`]) // Change to include all subfolders
     .pipe(fileInclude({
         prefix: '@',
-        basepath: '@file'
+        basepath: '@file',
+        context: { mode: 'default' }
     }))
     /*.pipe(typograf({
       locale: ['ru', 'en-US']

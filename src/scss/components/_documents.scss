@@ -3,27 +3,33 @@
   background: var(--surface-primary);
 
   &__panel {
+    display: grid;
+    grid-template-columns: 407px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
     overflow: hidden;
     border-radius: 32px;
     padding: 40px;
-    background: linear-gradient(165deg, #f3fbf8 30%, #d6f8f5 100%);
+    background: linear-gradient(145deg, #b8ea68 0%, #b5e871 42%, #8fdccd 100%);
+    gap: 24px 40px;
   }
 
   &__title {
-    margin: 0 0 16px;
-    font: 700 40px / 44px var(--font-family);
+    margin: 0;
+    font: 700 48px / 52px var(--font-family);
     letter-spacing: -0.04em;
     color: var(--text-primary);
   }
 
   &__intro {
-    margin: 0 0 40px;
-    font: 500 16px / 24px var(--font-family);
+    margin: 0;
+    font: 500 18px / 28px var(--font-family);
     color: var(--text-primary);
   }
 
   &__cards {
     display: grid;
+    grid-column: 2;
+    grid-row: 1 / 3;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
@@ -117,6 +123,32 @@
   }
 }
 
+@include for-desktop {
+  .documents--default {
+    padding: 40px 0 0;
+
+    .documents__panel {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      background: url("../img/documents/background.png") center bottom / 100% auto no-repeat, var(--surface-brand-subtle);
+      gap: 0;
+    }
+
+    .documents__title {
+      margin-bottom: 24px;
+    }
+
+    .documents__intro {
+      margin-bottom: 40px;
+    }
+
+    .documents__cards {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+}
+
 @include tablet {
   .documents {
     padding: 0 0 40px;
@@ -126,6 +158,7 @@
     }
 
     &__panel {
+      display: block;
       border-radius: 16px;
       padding: 16px;
     }
@@ -209,6 +242,53 @@
       grid-column: 2;
       padding: 8px;
       min-height: 36px;
+    }
+  }
+}
+
+.documents--main {
+  padding-top: 40px;
+  padding-bottom: 0;
+
+  .documents__panel {
+    background: linear-gradient(145deg, #b8ea68 0%, #b5e871 42%, #8fdccd 100%);
+  }
+
+  .document-card--main {
+    grid-template-columns: 144px minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    min-height: 160px;
+
+    .document-card__content p {
+      display: none;
+    }
+
+    .document-card__preview {
+      grid-row: 1 / 3;
+      width: 144px;
+      height: 144px;
+    }
+
+    .document-card__download {
+      justify-self: start;
+      grid-column: 2;
+      min-width: 132px;
+    }
+  }
+}
+
+@include tablet {
+  .documents--main {
+    padding-top: 24px;
+
+    .document-card--main {
+      grid-template-columns: 64px minmax(0, 1fr);
+      min-height: 120px;
+
+      .document-card__preview {
+        width: 64px;
+        height: 72px;
+      }
     }
   }
 }

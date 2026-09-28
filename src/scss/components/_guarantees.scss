@@ -1,6 +1,6 @@
 .guarantees {
   overflow: hidden;
-  padding: 112px 0 80px;
+  padding: 112px 0 0;
   border-radius: 24px;
   color: var(--text-primary);
   background: var(--surface-primary);
@@ -46,14 +46,14 @@
 
   &__cards {
     display: grid;
-    grid-template-columns: minmax(0, 578fr) minmax(0, 711fr);
+    grid-template-columns: minmax(0px, 498.5fr) minmax(0px, 612.5fr);
     gap: 24px;
   }
 
   &__slider {
     display: grid;
-    grid-template-columns: minmax(0, 415fr) minmax(0, 272fr);
-    grid-template-rows: 214px 322px;
+    grid-template-columns: 415px 1fr;
+    grid-template-rows: 214px 362px;
     gap: 24px;
     min-width: 0;
   }
@@ -331,6 +331,135 @@
     &_risk p {
       font-size: 16px;
       line-height: 24px;
+    }
+  }
+}
+
+.guarantees--main {
+  .guarantees__title {
+    background: linear-gradient(90deg, #e4a355 0 38%, var(--text-primary) 38%);
+    background-clip: text;
+    color: transparent;
+  }
+
+  .guarantees__title span {
+    color: inherit;
+  }
+
+  .guarantees__cards {
+    align-items: stretch;
+  }
+
+  .guarantees__slider {
+    grid-template-columns: 1fr;
+    grid-template-rows: 214px 362px;
+  }
+
+  .guarantee-card--main-featured,
+  .guarantee-card--main-secondary {
+    background: var(--surface-secondary);
+
+    img {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      max-width: 100%;
+      height: auto;
+      pointer-events: none;
+      width: 100%;
+    }
+  }
+
+  .guarantee-card--main-risk {
+    background: var(--surface-secondary);
+  }
+  .guarantee-card--main-featured {
+    padding: 32px;
+    min-height: 600px;
+    color: var(--text-overlay-primary);
+    background: #000401;
+
+    h3 {
+      max-width: 100%;
+    }
+
+    p {
+      margin-top: 16px;
+      max-width: 100%;
+      color: var(--text-overlay-secondary);
+    }
+  }
+
+  .guarantee-card--main-secondary {
+    min-height: 0;
+
+    div {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      max-width: 100%;
+    }
+
+    h3 {
+      font-size: 36px;
+      line-height: 40px;
+      color: inherit;
+    }
+
+    p {
+      margin-top: 12px;
+      max-width: 321px;
+      color: var(--text-secondary);
+    }
+
+    img {
+      width: 48%;
+    }
+  }
+  .guarantee-card--main-fintech {
+    background: rgb(0, 4, 1);
+    color: var(--surface-primary);
+    p {
+      color: var(--surface-primary);
+    }
+  }
+}
+
+@include tablet {
+  .guarantees--main {
+    .guarantees__slider {
+      height: 360px;
+    }
+
+    .guarantee-card--main-featured {
+      padding: 16px;
+      min-height: 440px;
+    }
+
+    .guarantee-card--main-secondary {
+      flex: 0 0 280px;
+      min-height: 360px;
+
+      div {
+        max-width: 100%;
+      }
+
+      h3 {
+        font-size: 24px;
+        line-height: 28px;
+      }
+
+      img {
+        width: 72%;
+      }
+    }
+
+    .guarantees__title {
+      background: linear-gradient(90deg, #e4a355 0 37%, var(--text-primary) 37%);
+      background-clip: text;
     }
   }
 }

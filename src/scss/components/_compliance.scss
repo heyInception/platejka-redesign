@@ -1,0 +1,292 @@
+.compliance {
+  padding: 112px 0;
+  color: var(--text-primary);
+  background: var(--surface-primary);
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 565px minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__eyebrow {
+    margin: 0 0 24px;
+    border-radius: 12px;
+    padding: 4px 12px;
+    font: 700 14px / 20px var(--font-family);
+    letter-spacing: -0.02em;
+    background: var(--surface-tertiary);
+  }
+
+  h2 {
+    margin: 0;
+    font: 700 48px / 52px var(--font-family);
+    letter-spacing: -0.04em;
+
+    span {
+      color: var(--text-secondary);
+    }
+  }
+
+  &__lead {
+    margin: 24px 0;
+    font: 500 18px / 28px var(--font-family);
+  }
+
+  &__button {
+    justify-content: space-between;
+    padding: 16px 32px;
+    width: 312px;
+    min-height: 60px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  &__benefits {
+    display: grid;
+    margin-top: 32px;
+    gap: 8px;
+
+    li {
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      gap: 8px;
+    }
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-rows: 1fr 292px;
+    gap: 16px;
+  }
+
+  &__banks-card,
+  &__test {
+    overflow: hidden;
+    border-radius: 24px;
+  }
+
+  &__banks-card {
+    padding: 40px;
+    background: var(--surface-secondary);
+
+    h3 {
+      margin: 0 0 16px;
+      font: 700 28px / 32px var(--font-family);
+      letter-spacing: -0.02em;
+    }
+    > p {
+      margin: 0 0 16px;
+      color: var(--text-secondary);
+    }
+  }
+
+  &__banks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 12px 4px 4px;
+      min-height: 40px;
+      background: #fff;
+      gap: 8px;
+    }
+    img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+    span {
+      font: 500 14px / 20px var(--font-family);
+      white-space: nowrap;
+    }
+  }
+
+  &__test {
+    position: relative;
+    padding: 40px;
+    color: #fff;
+    background: #287f36 url("../img/compliance/test-main-bg.png") center / cover no-repeat;
+
+    &-content {
+      position: relative;
+      z-index: 2;
+      max-width: 533px;
+    }
+    h3 {
+      margin: 0 0 24px;
+      font: 700 28px / 32px var(--font-family);
+      letter-spacing: -0.02em;
+    }
+    p {
+      margin: 0 0 24px;
+      max-width: 533px;
+      font: 500 16px / 24px var(--font-family);
+      color: rgb(255 255 255 / 72%);
+    }
+    > img {
+      position: absolute;
+      right: -10px;
+      bottom: 0;
+      width: 310px;
+      height: 270px;
+      object-fit: contain;
+      object-position: right bottom;
+    }
+  }
+
+  &__test-button {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0;
+    border-radius: 16px;
+    padding: 16px 32px;
+    width: 330px;
+    min-height: 60px;
+    font: 500 18px / 28px var(--font-family);
+    color: var(--text-primary);
+    background: #fff;
+    cursor: pointer;
+  }
+}
+
+.compliance-dialog {
+  border: 0;
+  border-radius: 24px;
+  padding: 0;
+  width: min(520px, calc(100% - 32px));
+  color: var(--text-primary);
+}
+.compliance-dialog::backdrop {
+  background: rgb(0 0 0 / 56%);
+}
+.compliance-dialog__content {
+  position: relative;
+  padding: 40px;
+}
+.compliance-dialog__content h2 {
+  margin: 0 0 12px;
+  font: 700 32px / 36px var(--font-family);
+}
+.compliance-dialog__content p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.compliance-dialog__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  font-size: 28px;
+}
+
+@include tablet {
+  .compliance {
+    padding: 64px 0;
+
+    &__layout {
+      display: block;
+      padding: 0 8px;
+    }
+    &__eyebrow {
+      margin-bottom: 24px;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    h2 {
+      font-size: 30px;
+      line-height: 34px;
+      letter-spacing: -0.02em;
+    }
+    &__lead {
+      margin: 16px 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &__button {
+      width: 100%;
+    }
+    &__benefits {
+      display: none;
+    }
+    &__cards {
+      grid-template-rows: auto auto;
+      margin-top: 24px;
+      gap: 16px;
+    }
+    &__banks-card {
+      border-radius: 16px;
+      padding: 16px;
+    }
+    &__banks-card h3 {
+      margin-bottom: 16px;
+      font-size: 20px;
+      line-height: 24px;
+    }
+    &__banks-card > p {
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &__banks {
+      gap: 4px;
+    }
+    &__banks li {
+      min-height: 36px;
+      padding-right: 12px;
+    }
+    &__banks img {
+      width: 28px;
+      height: 28px;
+    }
+    &__test {
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 232px;
+    }
+    &__test-content {
+      max-width: none;
+    }
+    &__test h3 {
+      margin-bottom: 16px;
+      max-width: 270px;
+      font-size: 22px;
+      line-height: 26px;
+    }
+    &__test p {
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &__test > img {
+      display: none;
+    }
+    &__test-button {
+      width: 100%;
+    }
+  }
+
+  .compliance-dialog__content {
+    padding: 32px 20px;
+  }
+}

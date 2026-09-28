@@ -1,6 +1,6 @@
 .shipments {
   overflow: hidden;
-  padding: 112px 0 64px;
+  padding: 112px 0 0;
   color: var(--text-primary);
   background: var(--surface-primary);
 
@@ -16,6 +16,7 @@
   }
 
   &__title {
+    margin: 0;
     font: 700 48px / 52px var(--font-family);
     letter-spacing: -0.04em;
   }
@@ -66,7 +67,7 @@
   }
 
   &_blue {
-    background: #74b0dd;
+    background: var(--surface-secondary);
   }
 
   &_gray {
@@ -117,8 +118,8 @@
     right: -71px;
     bottom: 0;
     display: block;
-    width: 300px;
-    height: 300px;
+    width: 380px;
+    height: 380px;
     object-fit: cover;
     pointer-events: none;
     will-change: transform, opacity;
@@ -221,5 +222,95 @@
 @media (prefers-reduced-motion: reduce) {
   .shipment-card__image {
     will-change: auto;
+  }
+}
+
+.shipments--main {
+  padding-top: 112px;
+
+  .shipments__header {
+    max-width: none;
+  }
+
+  .shipment-card--main {
+    min-height: 380px;
+    gap: 16px;
+  }
+
+  .shipment-card--main {
+    .shipment-card__tags {
+      max-width: calc(100% - 160px);
+    }
+  }
+
+  .shipment-card--main:nth-child(1) {
+    background: #ffe0ad;
+  }
+  .shipment-card--main:nth-child(2) {
+    background: #e5f9c5;
+  }
+  .shipment-card--main:nth-child(3),
+  .shipment-card--main:nth-child(5) {
+    background: var(--surface-secondary);
+  }
+
+  .shipment-card__link {
+    position: relative;
+    z-index: 3;
+    align-self: flex-start;
+    margin-top: auto;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    min-width: 188px;
+    min-height: 60px;
+    font: 500 18px / 28px var(--font-family);
+    color: var(--text-brand);
+    background: var(--surface-brand-subtle);
+    backdrop-filter: blur(12px);
+
+    &::after {
+      margin-left: 8px;
+      font-size: 28px;
+      line-height: 1;
+      content: "›";
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--border-brand);
+      outline-offset: 2px;
+    }
+  }
+
+  .shipment-card_dark .shipment-card__link {
+    color: var(--text-overlay-primary);
+    background: var(--surface-overlay);
+  }
+}
+
+@include tablet {
+  .shipments--main {
+    padding-top: 64px;
+
+    .shipment-card--main {
+      min-height: 390px;
+    }
+
+    .shipment-card__link {
+      margin-top: 0;
+      padding: 8px;
+      min-width: 52px;
+      min-height: 36px;
+      width: 52px;
+      height: 36px;
+      font-size: 0;
+
+      &::after {
+        margin: 0;
+        font-size: 24px;
+      }
+    }
   }
 }

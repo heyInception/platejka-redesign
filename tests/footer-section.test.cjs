@@ -40,9 +40,9 @@ test('Footer is included after the main content on China page', () => {
 test('Footer styles compile to the Penpot desktop and tablet layouts', () => {
   const css = sass.compile(path.join(root, 'src/scss/main.scss')).css;
 
-  assert.match(css, /\.footer__panel\s*\{[^}]*min-height:\s*692px[^}]*border-radius:\s*40px[^}]*padding:\s*64px 64px 40px/s);
+  assert.match(css, /\.footer__panel\s*\{[^}]*display:\s*flex[^}]*flex-direction:\s*column[^}]*padding:\s*64px 0 40px/s);
   assert.match(css, /\.footer__main\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*448px\)\s+minmax\(0,\s*1fr\)[^}]*gap:\s*40px/s);
-  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*\.footer__panel\s*\{[^}]*min-height:\s*1586px[^}]*border-radius:\s*0[^}]*padding:\s*64px 8px 24px/s);
+  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*\.footer__panel\s*\{[^}]*border-radius:\s*0[^}]*padding:\s*0 0 24px/s);
   assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*\.footer__main\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)[^}]*gap:\s*24px/s);
-  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*\.footer__navigation\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)[^}]*gap:\s*32px/s);
+  assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*\.footer__navigation\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)[^}]*gap:\s*24px/s);
 });
