@@ -1,0 +1,18 @@
+.employees {
+  padding-top: 112px;
+  color: var(--text-overlay-primary);
+  &__panel { position: relative; overflow: hidden; border-radius: 36px; padding: 96px 0; background: var(--surface-inverse) url("../img/employees/employees-bg.png") bottom / 100% auto no-repeat; }
+  &__layout { display: grid; grid-template-columns: minmax(0, 688px) minmax(0, 584px); gap: 40px; align-items: start; }
+  &__quote h2 { font: 700 18px / 22px var(--font-family); color: var(--text-overlay-secondary); }
+  &__quote blockquote { margin: 36px 0 0; font: 700 36px / 40px var(--font-family); letter-spacing: -0.02em; }
+  &__quote footer { display: flex; align-items: center; margin-top: 40px; gap: 16px; }
+  &__quote footer img { border-radius: 50%; width: 72px; height: 72px; object-fit: cover; }
+  &__quote footer div { display: flex; flex-direction: column; }
+  &__quote footer strong { font: 700 24px / 28px var(--font-family); }
+  &__quote footer span { font: 500 16px / 24px var(--font-family); color: var(--text-overlay-secondary); }
+  &__image { display: block; border-radius: 32px; width: 100%; min-height: 426px; object-fit: cover; }
+}
+
+@include tablet {
+  .employees { padding: 36px 16px; background: var(--surface-inverse); &__panel { overflow: visible; border-radius: 0; padding: 0; background-size: auto 264px; } .container { padding: 0; } &__layout { grid-template-columns: 1fr; gap: 24px; } &__quote blockquote { margin-top: 36px; font-size: 24px; line-height: 28px; } &__quote footer { margin-top: 24px; } &__quote footer img { width: 64px; height: 64px; } &__quote footer strong { font-size: 20px; line-height: 24px; } &__quote footer span { font-size: 14px; line-height: 20px; } &__image { border-radius: 24px; min-height: 320px; } }
+}

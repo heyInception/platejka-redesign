@@ -1,0 +1,21 @@
+.developing {
+  overflow: hidden;
+  padding: 112px 0;
+  color: var(--text-primary);
+  h2 { font: 700 24px / 28px var(--font-family); }
+  &__years { display: flex; justify-content: center; margin-top: 40px; gap: 11px; }
+  &__years button { border: 0; border-radius: 24px; padding: 12px 24px; font: 700 20px / 24px var(--font-family); background: var(--surface-secondary); cursor: pointer; }
+  &__years button.is-active, &__years button[aria-current="true"] { color: #fff; background: var(--surface-inverse); }
+  &__viewport { overflow: hidden; margin-top: 40px; width: calc(100vw - max(64px, calc((100vw - 1312px) / 2))); }
+  &__track { display: flex; width: max-content; gap: 32px; touch-action: pan-y; }
+  &__card { display: flex; flex: 0 0 429px; flex-direction: column; border-radius: 32px; padding: 32px; width: 429px; min-height: 600px; color: #fff; background: linear-gradient(180deg, rgba(16,17,19,.05), rgba(16,17,19,.82)), var(--developing-image) center / cover no-repeat; }
+  &__card > strong { font: 500 144px / 144px var(--font-family); letter-spacing: -0.06em; }
+  &__card h3 { margin: 24px 0 0; font: 700 36px / 40px var(--font-family); }
+  &__card p { margin: auto 0 0; font: 500 16px / 24px var(--font-family); }
+  .slider-controls { display: flex; justify-content: center; margin-top: 40px; gap: 8px; }
+  .slider-controls button { border: 1px solid var(--border-secondary); border-radius: 50%; width: 44px; height: 44px; font-size: 26px; background: #fff; cursor: pointer; }
+}
+
+@include tablet {
+  .developing { padding: 64px 0; .container { padding: 0 8px; } h2 { font-size: 18px; line-height: 22px; } &__years { overflow-x: auto; justify-content: flex-start; margin: 24px -8px 0; padding: 0 8px; scrollbar-width: none; } &__years::-webkit-scrollbar { display: none; } &__years button { flex: 0 0 auto; } &__viewport { overflow-x: auto; margin-top: 24px; margin-right: -8px; padding-right: 8px; width: auto; scrollbar-width: none; } &__viewport::-webkit-scrollbar { display: none; } &__track { gap: 16px; } &__card { flex-basis: 359px; border-radius: 24px; padding: 24px; width: 359px; min-height: 600px; } &__card > strong { font-size: 48px; line-height: 52px; letter-spacing: -0.04em; } &__card h3 { margin-top: 24px; font-size: 20px; line-height: 24px; } &__card p { font-size: 14px; line-height: 20px; } .slider-controls { display: none; } }
+}

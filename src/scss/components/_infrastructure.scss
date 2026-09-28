@@ -1,0 +1,48 @@
+.infrastructure {
+  overflow: hidden;
+  padding-top: 112px;
+  color: var(--text-primary);
+
+  p { margin: 0; }
+  &__header { margin: 0 auto; max-width: 1014px; text-align: center; }
+  &__header h2 { font: 700 64px / 64px var(--font-family); letter-spacing: -0.04em; }
+  &__header > p { margin-top: 24px; font: 500 18px / 28px var(--font-family); }
+  &__specializations { display: flex; align-items: center; justify-content: center; margin-top: 24px; gap: 24px; }
+  &__specializations > span { font: 500 18px / 28px var(--font-family); color: var(--text-tertiary); }
+  &__specializations strong { display: flex; align-items: center; border-radius: 24px; padding: 16px; min-width: 222px; font: 500 16px / 24px var(--font-family); background: var(--surface-secondary); gap: 8px; }
+  &__specializations img { border-radius: 50%; width: 40px; height: 40px; object-fit: cover; }
+  &__facts { display: flex; justify-content: center; margin-top: 40px; gap: 24px; }
+  &__fact { display: flex; flex-direction: column; align-items: center; border-radius: 24px; padding: 12px 16px; width: 222px; text-align: center; background: var(--surface-secondary); }
+  &__fact strong { font: 700 30px / 34px var(--font-family); }
+  &__fact span { font: 600 12px / 16px var(--font-family); color: var(--text-secondary); }
+  &__network { position: relative; margin: 40px auto 0; max-width: 1014px; min-height: 447px; }
+  &__network > img { display: block; width: 100%; min-height: 447px; object-fit: cover; }
+  &__entities { position: absolute; inset: 20%; }
+  &__entity { position: absolute; display: flex; align-items: center; border-radius: 64px; padding-right: 16px; min-height: 48px; font: 500 16px / 24px var(--font-family); background: var(--surface-secondary); gap: 8px; }
+  &__entity img { border-radius: 50%; width: 48px; height: 48px; object-fit: cover; }
+  &__entity span { display: flex; flex-direction: column; }
+  &__entity small { font: 600 12px / 16px var(--font-family); color: var(--text-secondary); }
+  &__entity--active { color: #fff; background: var(--surface-inverse); }
+  &__entity--active small { color: var(--text-overlay-secondary); }
+  @for $i from 1 through 11 { &__entity:nth-child(#{$i}) { left: (($i * 13) % 78) * 1%; top: (($i * 23) % 78) * 1%; } }
+}
+
+@include tablet {
+  .infrastructure {
+    padding-top: 64px;
+    .container { padding: 0 8px; }
+    &__header { text-align: left; }
+    &__header h2 { font-size: 30px; line-height: 34px; letter-spacing: -0.02em; }
+    &__header > p { margin-top: 16px; font-size: 14px; line-height: 20px; }
+    &__specializations { flex-wrap: wrap; justify-content: flex-start; margin-top: 32px; gap: 4px; }
+    &__specializations > span { flex-basis: 100%; margin-bottom: 8px; font-size: 14px; line-height: 20px; text-align: center; }
+    &__specializations strong { flex: 1; padding: 12px; min-width: 0; }
+    &__facts { margin-top: 24px; gap: 4px; }
+    &__fact { flex: 1; border-radius: 16px; padding: 8px; width: auto; min-height: 122px; }
+    &__network { display: flex; flex-direction: column-reverse; margin-top: 24px; min-height: 0; }
+    &__network > img { margin: 0 -8px; width: calc(100% + 16px); min-height: 164px; }
+    &__entities { position: static; display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; gap: 4px; }
+    &__entity { position: static; padding-right: 10px; min-height: 48px; font-size: 14px; line-height: 20px; }
+    &__entity img { width: 40px; height: 40px; }
+  }
+}

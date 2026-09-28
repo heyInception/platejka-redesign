@@ -1,0 +1,26 @@
+.exhibitions {
+  overflow: hidden;
+  padding: 112px 0;
+  color: var(--text-primary);
+  p { margin: 0; }
+  &__layout { display: grid; grid-template-columns: 565px minmax(0, 1fr); gap: 32px; }
+  &__content { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+  &__content h2 { font: 700 48px / 52px var(--font-family); letter-spacing: -0.04em; }
+  &__content h3 { margin: 24px 0 0; font: 700 20px / 24px var(--font-family); }
+  &__content p { margin-top: 24px; font: 500 16px / 24px var(--font-family); color: var(--text-secondary); }
+  &__trademark { display: flex; align-items: center; gap: 16px; }
+  &__trademark img { border-radius: 24px; width: 144px; height: 144px; }
+  &__trademark div { display: flex; flex-direction: column; gap: 6px; }
+  &__trademark strong { font: 700 20px / 24px var(--font-family); }
+  &__trademark span { max-width: 228px; font: 500 16px / 24px var(--font-family); color: var(--text-secondary); }
+  &__slider { min-width: 0; }
+  &__viewport { overflow: hidden; width: calc(100vw - max(64px, calc((100vw - 1312px) / 2)) - 597px); }
+  &__track { display: flex; width: max-content; gap: 24px; touch-action: pan-y; }
+  &__track img { display: block; flex: 0 0 400px; border-radius: 32px; width: 400px; height: 428px; object-fit: cover; }
+  .slider-controls { display: flex; margin-top: 24px; gap: 8px; }
+  .slider-controls button { border: 1px solid var(--border-secondary); border-radius: 50%; width: 44px; height: 44px; font-size: 26px; background: #fff; cursor: pointer; }
+}
+
+@include tablet {
+  .exhibitions { padding: 64px 0; .container { padding: 0 8px; } &__layout { grid-template-columns: 1fr; gap: 24px; } &__content { gap: 24px; } &__content h2 { font-size: 30px; line-height: 34px; letter-spacing: -0.02em; } &__content h3 { margin-top: 16px; font-size: 14px; line-height: 20px; } &__content p { margin-top: 16px; font-size: 14px; line-height: 20px; } &__trademark { order: 2; } &__trademark img { width: 144px; height: 144px; } &__viewport { overflow-x: auto; margin-right: -8px; padding-right: 8px; width: auto; scrollbar-width: none; } &__viewport::-webkit-scrollbar { display: none; } &__track { gap: 16px; } &__track img { flex-basis: 200px; border-radius: 24px; width: 200px; height: 214px; } .slider-controls { display: none; } }
+}
