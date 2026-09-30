@@ -1,6 +1,6 @@
 .shipments {
   overflow: hidden;
-  padding: 112px 0 0;
+  margin: 112px 0;
   color: var(--text-primary);
   background: var(--surface-primary);
 
@@ -128,7 +128,7 @@
 
 @include tablet {
   .shipments {
-    padding: 64px 0 40px;
+    margin: 64px 0;
 
     .container {
       padding: 0 8px;
@@ -226,7 +226,6 @@
 }
 
 .shipments--main {
-  padding-top: 112px;
 
   .shipments__header {
     max-width: none;

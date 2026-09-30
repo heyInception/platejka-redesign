@@ -1,6 +1,6 @@
 .cases {
   overflow: hidden;
-  padding: 112px 0 0;
+  margin: 112px 0;
   color: var(--text-primary);
   background: var(--surface-primary);
 
@@ -82,7 +82,7 @@
 
 @include tablet {
   .cases {
-    padding: 64px 0 0;
+    margin: 64px 0;
 
     .container {
       padding: 0 8px;

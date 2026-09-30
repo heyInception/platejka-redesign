@@ -4,6 +4,8 @@ const {
   clampIndex,
   getTargetOffset,
   getReachableIndex,
+  getTrackEndSpace,
+  areSliderControlsDisabled,
   shouldShowControls,
   isIndexedControlActive,
   isInteractiveTarget,
@@ -25,6 +27,7 @@ function initHorizontalSlider(root) {
   const desktop = window.matchMedia('(min-width: 1025px)');
   const minimumControls = Number.parseInt(root.dataset.horizontalSliderMinControls || '0', 10);
   const desktopControlsOnly = root.hasAttribute('data-horizontal-slider-desktop-controls');
+  const alignEverySlide = root.hasAttribute('data-horizontal-slider-align-every-slide');
   let currentIndex = 0;
   let currentOffset = 0;
   let offsets = [];
@@ -33,14 +36,15 @@ function initHorizontalSlider(root) {
 
   const syncControls = () => {
     const maximum = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    const controlsDisabled = areSliderControlsDisabled(slides.length);
     if (controls) controls.hidden = !shouldShowControls(
       slides.length,
       minimumControls,
       desktop.matches,
       desktopControlsOnly,
     );
-    if (previous) previous.disabled = currentOffset <= 0;
-    if (next) next.disabled = currentOffset >= maximum;
+    if (previous) previous.disabled = controlsDisabled || currentOffset <= 0;
+    if (next) next.disabled = controlsDisabled || currentOffset >= maximum;
     indexedControls.forEach((control) => {
       const active = isIndexedControlActive(control.dataset.horizontalSliderGoTo, currentIndex, slides.length);
       control.setAttribute('aria-current', active ? 'true' : 'false');
@@ -49,6 +53,9 @@ function initHorizontalSlider(root) {
   };
 
   const measure = () => {
+    if (alignEverySlide) {
+      track.style.paddingRight = `${getTrackEndSpace(viewport.clientWidth, slides.at(-1)?.offsetWidth || 0)}px`;
+    }
     offsets = slides.map((slide) => slide.offsetLeft);
   };
 

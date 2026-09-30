@@ -1,6 +1,6 @@
 .protection {
   border-radius: 24px;
-  padding: 112px 0;
+  margin: 112px 0;
   background: var(--surface-primary);
 
   .container {
@@ -63,7 +63,7 @@
 @include tablet {
   .protection {
     border-radius: 0;
-    padding: 40px 0 64px;
+    margin: 64px 0;
 
     .container { display: block; padding: 0 16px; }
     &__eyebrow { margin-bottom: 16px; font-size: 12px; line-height: 16px; }

@@ -1,7 +1,7 @@
 .about {
   position: relative;
   overflow: clip;
-  padding: 112px 0 64px;
+  margin: 112px 0;
   color: var(--text-primary);
   background: var(--surface-primary);
 
@@ -273,7 +273,7 @@
 
 @include tablet {
   .about {
-    padding: 64px 0 40px;
+    margin: 64px 0;
 
     .container {
       padding: 0 8px;

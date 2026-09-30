@@ -1,5 +1,5 @@
 .compliance {
-  padding: 112px 0;
+  margin: 112px 0;
   color: var(--text-primary);
   background: var(--surface-primary);
 
@@ -202,7 +202,7 @@
 
 @include tablet {
   .compliance {
-    padding: 64px 0;
+    margin: 64px 0;
 
     &__layout {
       display: block;

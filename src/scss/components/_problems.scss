@@ -1,5 +1,5 @@
 .problems {
-  padding: 112px 0 0;
+  margin: 112px 0;
   background: var(--surface-primary);
 
   h2 {
@@ -158,7 +158,7 @@
 
 @include tablet {
   .problems {
-    padding-top: 64px;
+    margin: 64px 0;
     .container {
       padding: 0 8px;
     }

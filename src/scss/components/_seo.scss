@@ -1,7 +1,6 @@
 .seo {
   color: var(--text-primary);
   background: var(--surface-primary);
-
   [hidden] {
     display: none;
   }
@@ -37,7 +36,7 @@
       letter-spacing: -0.02em;
     }
 
-    div > p  {
+    div > p {
       margin-top: 24px;
     }
 
@@ -132,10 +131,11 @@
 
 @include tablet {
   .seo {
-    padding: 64px 0 0;
-
     .container {
       padding: 0 8px;
+    }
+    &__wrap {
+      margin: 64px 0;
     }
 
     &__group {

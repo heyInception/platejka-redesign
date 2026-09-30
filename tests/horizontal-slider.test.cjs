@@ -7,6 +7,8 @@ const {
   shouldShowControls,
   isIndexedControlActive,
   isInteractiveTarget,
+  getTrackEndSpace,
+  areSliderControlsDisabled,
 } = require('../src/js/components/horizontal-slider.cjs');
 
 test('clamps indexes including empty and single-card sliders', () => {
@@ -26,6 +28,21 @@ test('normalizes the index to the first slide that reaches the track edge', () =
   assert.equal(getReachableIndex([0, 448, 896, 1344], 3, 600, 1500), 3);
   assert.equal(getReachableIndex([0, 448, 896, 1344], 3, 600, 1312), 2);
   assert.equal(getReachableIndex([0], 0, 600, 280), 0);
+});
+
+test('reserves enough track space for every slide to reach its own position', () => {
+  assert.equal(getTrackEndSpace?.(1019, 400), 619);
+  assert.equal(getTrackEndSpace?.(779, 400), 379);
+  assert.equal(getTrackEndSpace?.(359, 200), 159);
+  assert.equal(getTrackEndSpace?.(180, 200), 0);
+});
+
+test('disables both arrows only when a slider has fewer than two slides', () => {
+  assert.equal(areSliderControlsDisabled?.(0), true);
+  assert.equal(areSliderControlsDisabled?.(1), true);
+  assert.equal(areSliderControlsDisabled?.(2), false);
+  assert.equal(areSliderControlsDisabled?.(7), false);
+  assert.equal(areSliderControlsDisabled?.(50), false);
 });
 
 test('uses desktop card-count thresholds without hiding mobile controls', () => {

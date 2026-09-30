@@ -4,7 +4,7 @@ test('main review contains both accessible tab panels and slider controls', () =
   const html = read('src/partials/review-main.html');
   assert.match(html, /<section[^>]+data-review/); assert.equal((html.match(/role="tab"/g) || []).length, 2); assert.equal((html.match(/role="tabpanel"/g) || []).length, 2);
   assert.match(html, /aria-selected="true"[^>]*>Видео-отзывы/); assert.equal((html.match(/review-main__text-card/g) || []).length, 3); assert.equal((html.match(/data-horizontal-slider(?:\s|>)/g) || []).length, 2); assert.match(html, /data-review-video/);
-  assert.match(html, /data-horizontal-slider-min-controls="5"/);
+  assert.match(html, /data-horizontal-slider-min-controls="6"/);
   assert.match(html, /data-horizontal-slider-min-controls="4"/);
   assert.equal((html.match(/data-horizontal-slider-slide/g) || []).length, 8);
   assert.match(html, /aria-label="Закрыть видеоотзыв"/);

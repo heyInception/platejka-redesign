@@ -23,6 +23,15 @@ function getReachableIndex(offsets, index, viewportWidth, trackWidth) {
   return edgeIndex < 0 ? requested : edgeIndex;
 }
 
+function getTrackEndSpace(viewportWidth, slideWidth) {
+  if (!Number.isFinite(viewportWidth) || !Number.isFinite(slideWidth)) return 0;
+  return Math.max(0, viewportWidth - slideWidth);
+}
+
+function areSliderControlsDisabled(slideCount) {
+  return !Number.isFinite(slideCount) || slideCount < 2;
+}
+
 function shouldShowControls(slideCount, minimum, isDesktop, desktopOnly = false) {
   const threshold = Number.isFinite(minimum) ? minimum : 0;
   if (desktopOnly && !isDesktop) return false;
@@ -42,6 +51,8 @@ module.exports = {
   clampIndex,
   getTargetOffset,
   getReachableIndex,
+  getTrackEndSpace,
+  areSliderControlsDisabled,
   shouldShowControls,
   isIndexedControlActive,
   isInteractiveTarget,

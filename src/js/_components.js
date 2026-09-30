@@ -1,11 +1,13 @@
 import './components/header';
 import './components/preloader';
+import './components/about-hero';
 import './components/hero';
 import './components/about';
 import './components/shipments';
 import './components/guarantees';
 import './components/documents';
 import './components/horizontal-slider';
+import './components/location-map';
 import './components/compliance';
 import './components/review';
 import './components/destinations';
@@ -13,3 +15,4 @@ import './components/problems';
 import './components/seo';
 import './components/faq';
 import './components/call';
+import './components/employees';
