@@ -31,9 +31,14 @@
             <label class="calculator__field">
               <span class="calculator__field-label">Страна Отправитель</span>
               <span class="calculator__select-wrap">
-                <img src="../img/ru-flag.png" width="20" height="20" alt="" aria-hidden="true">
-                <select name="country_from" data-role="country-from">
-                  <option value="RU">Россия</option>
+                <img src="../img/ru-flag.png" width="20" height="20" alt="" data-select-flag aria-hidden="true">
+                <select
+                  name="country_from"
+                  data-role="country-from"
+                  data-calculator-select="country"
+                  data-search-enabled="false"
+                >
+                  <option value="RU" data-flag="../img/ru-flag.png">Россия</option>
                 </select>
               </span>
             </label>
@@ -41,8 +46,13 @@
             <label class="calculator__field">
               <span class="calculator__field-label">Страна Получатель</span>
               <span class="calculator__select-wrap">
-                <img src="../img/cn-flag.png" width="20" height="20" alt="" data-role="country-flag" aria-hidden="true">
-                <select name="country_to" data-role="country-to">
+                <img src="../img/cn-flag.png" width="20" height="20" alt="" data-select-flag aria-hidden="true">
+                <select
+                  name="country_to"
+                  data-role="country-to"
+                  data-calculator-select="country"
+                  data-search-enabled="true"
+                >
                   <option value="CN" data-flag="../img/cn-flag.png">Китай</option>
                   <option value="TR">Турция</option>
                   <option value="US" data-flag="../img/usa-flag.png">Соединённые Штаты Америки</option>

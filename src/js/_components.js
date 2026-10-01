@@ -2,6 +2,7 @@ import './components/header';
 import './components/preloader';
 import './components/about-hero';
 import './components/hero';
+import './components/calculator-select';
 import './components/about';
 import './components/shipments';
 import './components/guarantees';

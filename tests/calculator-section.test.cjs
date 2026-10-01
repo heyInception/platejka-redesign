@@ -38,3 +38,56 @@ test('calculator section switches to stacked layout at tablet breakpoint', () =>
   assert.match(css, /\.calculator__panel\s*\{/);
   assert.match(css, /@media \(max-width:\s*1024px\)[\s\S]*?\.calculator__columns\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
 });
+
+test('calculator country selects opt into Select2 with the approved search behavior', () => {
+  const $ = cheerio.load(read('src/partials/calculator.html'));
+  const countryFrom = $('[data-role="country-from"]');
+  const countryTo = $('[data-role="country-to"]');
+
+  assert.equal(countryFrom.attr('data-calculator-select'), 'country');
+  assert.equal(countryFrom.attr('data-search-enabled'), 'false');
+  assert.equal(countryTo.attr('data-calculator-select'), 'country');
+  assert.equal(countryTo.attr('data-search-enabled'), 'true');
+  assert.equal(countryFrom.find('option[value="RU"]').attr('data-flag'), '../img/ru-flag.png');
+  assert.equal(countryTo.find('option[value="CN"]').attr('data-flag'), '../img/cn-flag.png');
+});
+
+test('Select2 is loaded through the existing vendor bundles before components', () => {
+  const packageJson = JSON.parse(read('package.json'));
+  const vendorJs = read('src/js/_vendor.js');
+  const vendorScss = read('src/scss/vendor.scss');
+  const mainJs = read('src/js/main.js');
+
+  assert.match(packageJson.dependencies.jquery, /^\^?3\./);
+  assert.match(vendorJs, /require\(['"]\.\/vendor\/select2\.min\.js['"]\)/);
+  assert.doesNotMatch(vendorJs, /require\(['"]\.\/vendor\/select2\.min\.js['"]\)\s*;?[\s\S]*?\(window,\s*\$\)/);
+  assert.match(vendorJs, /window\.jQuery\s*=\s*window\.\$\s*=\s*\$/);
+  assert.match(vendorScss, /@import\s+["']\.\/vendor\/select2\.min["']/);
+  assert.ok(mainJs.indexOf("import './_vendor'") < mainJs.indexOf("import './_components'"));
+});
+
+test('calculator Select2 configuration localizes search and preserves native fallback', () => {
+  const js = read('src/js/components/calculator-select.js');
+
+  assert.match(js, /\[data-calculator-select\]/);
+  assert.match(js, /minimumResultsForSearch/);
+  assert.match(js, /Страна не найдена/);
+  assert.match(js, /Поиск страны/);
+  assert.match(js, /data\('select2'\)/);
+  assert.match(js, /dataset\.flag/);
+});
+
+test('calculator Select2 matches every Figma select state', () => {
+  const css = sass.compile(path.join(root, 'src/scss/main.scss')).css;
+  const base = css.match(/\.calculator__select-wrap \.select2-container \.select2-selection--single\s*\{([^}]*)\}/)?.[1] || '';
+
+  assert.match(base, /height:\s*60px/);
+  assert.match(base, /border:\s*0/);
+  assert.match(base, /border-radius:\s*16px/);
+  assert.match(css, /\.calculator__select-wrap \.select2-container:hover \.select2-selection--single\s*\{[^}]*background:\s*#f4f6fb/s);
+  assert.match(css, /\.calculator__select-wrap \.select2-container--focus \.select2-selection--single\s*\{[^}]*border:\s*2px solid #007336/s);
+  assert.match(css, /\.calculator__select-wrap \.select2-container--default\.select2-container--open \.select2-selection--single\s*\{[^}]*border:\s*2px solid #007336[^}]*border-radius:\s*16px/s);
+  assert.match(css, /\.calculator__select-wrap select\[aria-invalid=true\] \+ \.select2-container \.select2-selection--single\s*\{[^}]*border:\s*2px solid #c7342a/s);
+  assert.match(css, /\.calculator__select-wrap \.select2-container--disabled \.select2-selection--single\s*\{[^}]*background:\s*#f4f6fb/s);
+  assert.match(css, /\.calculator__select-wrap \.select2-container--disabled \.select2-selection__rendered\s*\{[^}]*opacity:\s*0\.4/s);
+});

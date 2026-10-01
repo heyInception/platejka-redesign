@@ -33,6 +33,8 @@ const plumber = require('gulp-plumber');
 const path = require('path');
 const zip = require('gulp-zip');
 const rootFolder = path.basename(path.resolve());
+const sectionsConfig = require('./sections.config');
+const { buildWordPressAssets } = require('./build/wordpress-build');
 
 // paths
 const srcFolder = './src';
@@ -324,11 +326,19 @@ const toProd = (done) => {
   done();
 };
 
+const wordpress = () => buildWordPressAssets({
+  config: sectionsConfig,
+  rootDir: path.resolve(),
+  outputDir: path.resolve('wordpress'),
+});
+
 exports.default = series(clean, htmlInclude, scripts, styles, resources, images, videos, webpImages, svgSprites, watchFiles);
 
 exports.backend = series(clean, htmlInclude, scriptsBackend, stylesBackend, resources, images, videos, webpImages, svgSprites)
 
-exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, videos, webpImages, svgSprites, htmlMinify);
+exports.wordpress = series(toProd, wordpress);
+
+exports.build = series(toProd, clean, htmlInclude, scripts, styles, resources, images, videos, webpImages, svgSprites, htmlMinify, wordpress);
 
 exports.cache = series(cache, rewrite);
 

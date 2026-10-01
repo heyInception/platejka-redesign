@@ -2,27 +2,7 @@
 // Реализация бургер-меню
 import './functions/burger';
 // Реализация табов
-import GraphTabs from 'graph-tabs';
-const tabs = new GraphTabs('spec');
-try {
-  const selectElement = document.querySelector('#specialization'); // ID вашего select элемента
-
-  selectElement.addEventListener('change', function () {
-    const selectedValue = this.value;
-    const index = Array.from(this.options).findIndex(option => option.value === selectedValue);
-
-    if (index > -1) {
-      const selectedTab = document.querySelector(`#spec${index + 1}`);
-      const currentTab = document.querySelector('.tabs__nav-btn--active');
-
-      if (selectedTab !== currentTab) {
-        tabs.switchTabs(selectedTab, currentTab);
-      }
-    }
-  });
-} catch (error) {
-
-}
+//import GraphTabs from 'graph-tabs';
 
 // Подключение свайпера
 import Swiper from 'swiper';
